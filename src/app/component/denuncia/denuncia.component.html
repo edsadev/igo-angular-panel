@@ -1,0 +1,550 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Denuncias</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Denuncia</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-3 col-xlg-2">
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Busqueda</h3>
+                <p class="text-muted m-b-30 font-13">busqueda denuncia </p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="denunciaForm" (ngSubmit)="this.listar()">
+
+                            <div class="form-group">
+                                <label for="usuarios_id">ID</label>
+
+                                <input formControlName="usuarios_id" type="number" class="form-control"
+                                    name="usuarios_id" placeholder="Agregar usuario ID">
+
+                                <span
+                                    *ngIf="this.denunciaForm.get('usuarios_id').touched && this.denunciaForm.get('usuarios_id').invalid">
+                                    Introduzca un usuario ID
+                                </span>
+                                <span *ngIf="this.denunciaForm.get('usuarios_id').errors?.maxlength">
+                                    El usuario ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="servicios_id">Servicio ID</label>
+
+                                <input formControlName="servicios_id" type="text" class="form-control"
+                                    name="servicios_id" placeholder="Agregar servicio ID">
+
+                                <span
+                                    *ngIf="this.denunciaForm.get('servicios_id').touched && this.denunciaForm.get('servicios_id').invalid">
+                                    Introduzca un servicio ID
+                                </span>
+                                <span *ngIf="this.denunciaForm.get('servicios_id').errors?.maxlength">
+                                    El servicio ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contratos_id">Contrato ID</label>
+
+                                <input formControlName="contratos_id" type="text" class="form-control"
+                                    name="contratos_id" placeholder="Agregar contrato ID">
+
+                                <span
+                                    *ngIf="this.denunciaForm.get('contratos_id').touched && this.denunciaForm.get('contratos_id').invalid">
+                                    Introduzca un contrato ID
+                                </span>
+                                <span *ngIf="this.denunciaForm.get('contratos_id').errors?.maxlength">
+                                    El contrato ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tipo_denuncia">Tipo de denuncia</label>
+                                <select formControlName="tipo_denuncia" class="form-control" name="tipo_denuncia">
+                                    <option value="X">Servicio inadecuado</option>
+                                    <option value="Y">Servicio inconcluso</option>
+                                    <option value="Z">Otros</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.denunciaForm.get('tipo_denuncia').touched && this.denunciaForm.get('tipo_denuncia').invalid">
+                                    Seleccione un valor
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option>A</option>
+                                    <option>I</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.denunciaForm.get('estatus').touched && this.denunciaForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+
+                            </div>
+
+                            <button [disabled]="this.denunciaForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button type="reset" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-9 col-xlg-10">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Descripción</th>
+                                <th>Nombre y apellido</th>
+                                <th>Usuario ID</th>
+                                <th>Usuario</th>
+                                <th>Servicio</th>
+                                <th>Contrato</th>
+                                <th>Tipo de denuncia</th>
+                                <th>Estatus</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let denuncia of denuncias">
+                                <th scope="row">{{ denuncia.id | number}}</th>
+                                <td>{{ denuncia.descripcion }}</td>
+                                <td>{{ denuncia.usuario.nombre + ' ' + denuncia.usuario.apellido }}</td>
+                                <td>{{ denuncia.usuario.id }}</td>
+                                <td>{{ denuncia.usuario.email }}</td>
+                                <td>{{ denuncia.servicio ? denuncia.servicio.id:'' }}</td>
+                                <td>{{ denuncia.contrato ? denuncia.contrato.id:'' }}</td>
+                                <td>
+                                    <span [ngSwitch]="denuncia.tipo_denuncia">
+                                        <span *ngSwitchCase="'X'">Servicio inadecuado</span>
+                                        <span *ngSwitchCase="'Y'">Servicio inconcluso</span>
+                                        <span *ngSwitchCase="'Z'">Otros</span>
+                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [ngSwitch]="denuncia.estatus">
+                                        <span *ngSwitchCase="'A'">Activo</span>
+                                        <span *ngSwitchCase="'I'">Inactivo</span>
+                                        <span *ngSwitchCase="'E'">Eliminado</span>
+                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    </span>
+                                </td>
+                                <td>{{ denuncia.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ denuncia.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, denuncia)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="this.open(content, denuncia)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.denuncias.length < 1">
+                                <td colspan="12">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar denuncia</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar la denuncia <span
+                                    class="text-primary">"#{{ this.denuncia.id }}"</span>
+                                de la lista de denuncias?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a esta denuncia será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+                <ng-template #content let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Denuncia</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-body">
+
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)"
+                                    class="nav-tabs">
+
+                                    <li [ngbNavItem]="1">
+
+                                        <a ngbNavLink>Datos denuncia</a>
+
+                                        <ng-template ngbNavContent>
+
+                                            <form class="form-horizontal" role="form">
+
+                                                <div class="form-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Descripción:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.descripcion }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Usuario:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.usuario.email }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                    <!--/row-->
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Servicio:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.servicio ? this.denuncia.servicio.id:'' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Contrato:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato ? this.denuncia.contrato.id:''}}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row" *ngIf="this.denuncia.contrato">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Contrato
+                                                                    monto:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.monto }} USD
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Contrato
+                                                                    concepto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.concepto }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row" *ngIf="this.denuncia.contrato">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Fecha
+                                                                    contrato:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.fe_servicio | date:'dd/MM/y' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Notifición:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.notificas_id.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row" *ngIf="this.denuncia.contrato">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Cliente:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.cliente_id ? this.denuncia.contrato.cliente_id.nombre + ' ' + this.denuncia.contrato.cliente_id.apellido:this.denuncia.contrato.servicios_id.cliente.nombre + ' ' + this.denuncia.contrato.servicios_id.cliente.apellido }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Proveedor:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.contrato.proveedor_id ? this.denuncia.contrato.proveedor_id.nombre + ' ' + this.denuncia.contrato.proveedor_id.apellido:this.denuncia.contrato.servicios_id.proveedor.nombre + ' ' + this.denuncia.contrato.servicios_id.proveedor.apellido }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Estatus:</label>
+                                                                <div class="col-md-9">
+                                                                    <span *ngIf="this.denuncia.estatus"
+                                                                        [ngSwitch]="this.denuncia.estatus">
+                                                                        <p *ngSwitchCase="'A'"
+                                                                            class="form-control-static">
+                                                                            Activo</p>
+                                                                        <p *ngSwitchCase="'I'"
+                                                                            class="form-control-static">
+                                                                            Inactivo</p>
+                                                                        <p *ngSwitchCase="'E'"
+                                                                            class="form-control-static">
+                                                                            Eliminado</p>
+                                                                        <p *ngSwitchDefault class="form-control-static">
+                                                                            (Estatus
+                                                                            no existe)
+                                                                        </p>
+                                                                    </span>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Creado:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.created_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Modificado:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.denuncia.updated_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </ng-template>
+
+                                    </li>
+
+                                </ul>
+
+                                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button> -->
+                        <button ngbAutofocus type="button" (click)="modal.close('Close click')"
+                            class="btn btn-inverse waves-effect waves-light">Cerrar</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

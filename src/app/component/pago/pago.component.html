@@ -1,0 +1,198 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Forma de pago</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">pagos</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-5 col-xlg-4">
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Nueva forma de pago</h3>
+                <p class="text-muted m-b-30 font-13">Forma de pago </p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="this.pagoForm" (ngSubmit)="this.submit()">
+
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input formControlName="nombre" type="text" class="form-control" name="nombre"
+                                    placeholder="Agregar nombre">
+
+                                <span
+                                    *ngIf="this.pagoForm.get('nombre').touched && this.pagoForm.get('nombre').invalid">
+                                    Introduzca un nombre
+                                </span>
+                                <span *ngIf="this.pagoForm.get('nombre').errors?.maxlength">
+                                    El nombre debe tener máximo 50 carateres
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion"
+                                    placeholder="Agregar descripción">
+
+                                <span
+                                    *ngIf="this.pagoForm.get('descripcion').touched && this.pagoForm.get('descripcion').invalid">
+                                    Introduzca una descripción
+                                </span>
+                                <span *ngIf="this.pagoForm.get('descripcion').errors?.maxlength">
+                                    La descripción debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option>A</option>
+                                    <option>I</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.pagoForm.get('estatus').touched && this.pagoForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+
+                            </div>
+
+                            <button [disabled]="this.pagoForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Enviar</button>
+                            <button (click)="this.reset()" type="reset"
+                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-7 col-xlg-8">
+        
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Estatus</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pago of pagos">
+                                <th scope="row">{{ pago.id | number}}</th>
+                                <td>{{ pago.nombre }}</td>
+                                <td>{{ pago.descripcion }}</td>
+                                <td>
+                                    <span [ngSwitch]="pago.estatus">
+                                        <span *ngSwitchCase="'A'">Activo</span>
+                                        <span *ngSwitchCase="'I'">Inactivo</span>
+                                        <span *ngSwitchCase="'E'">Eliminado</span>
+                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    </span>
+                                </td>
+                                <td>{{ pago.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ pago.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, pago)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline"
+                                        (click)="consultar(pago)">
+                                        <i class="ti-pencil-alt" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.pagos.length < 1">
+                                <td colspan="10">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar forma de pago</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar la forma de pago <span
+                                    class="text-primary">"{{ this.pago.nombre }}"</span>
+                                de la lista de formas de pago?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a esta forma de pago será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

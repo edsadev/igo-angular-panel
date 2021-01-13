@@ -1,0 +1,223 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Contratos</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">contratos</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-5 col-xlg-4">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Busqueda contrato</h3>
+                <p class="text-muted m-b-30 font-13">contrato </p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="contratoForm" (ngSubmit)="this.listar()">
+
+                            <div class="form-group">
+                                <label for="usuarios_id">Usuario ID</label>
+
+                                <input formControlName="usuarios_id" type="number" class="form-control"
+                                    name="usuarios_id" placeholder="Agregar usuario ID">
+
+                                <span
+                                    *ngIf="this.contratoForm.get('usuarios_id').touched && this.contratoForm.get('usuarios_id').invalid">
+                                    Introduzca un usuario ID
+                                </span>
+                                <span *ngIf="this.contratoForm.get('usuarios_id').errors?.maxlength">
+                                    El usuario ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="servicios_id">Servicio ID</label>
+
+                                <input formControlName="servicios_id" type="text" class="form-control"
+                                    name="servicios_id" placeholder="Agregar servicio ID">
+
+                                <span
+                                    *ngIf="this.contratoForm.get('servicios_id').touched && this.contratoForm.get('servicios_id').invalid">
+                                    Introduzca un servicio ID
+                                </span>
+                                <span *ngIf="this.contratoForm.get('servicios_id').errors?.maxlength">
+                                    El servicio ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fe_inicio">Fecha inicio</label>
+
+                                <input formControlName="fe_inicio" type="text" class="form-control" name="fe_inicio"
+                                    placeholder="Agregar fecha de inicio">
+
+                                <span *ngIf="this.contratoForm.get('fe_inicio').errors?.pattern">
+                                    La fecha inicio debe tener el formato dd-MM-YYYY
+                                </span>
+                                <span *ngIf="this.contratoForm.get('fe_inicio').errors?.maxlength">
+                                    La fecha inicio debe tener máximo 50
+                                    carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fe_final">Fecha final</label>
+
+                                <input formControlName="fe_final" type="text" class="form-control" name="fe_final"
+                                    placeholder="Agregar fecha fnial">
+
+                                <span *ngIf="this.contratoForm.get('fe_final').errors?.pattern">
+                                    La fecha final debe tener el formato dd-MM-YYYY
+                                </span>
+                                <span *ngIf="this.contratoForm.get('fe_final').errors?.maxlength">
+                                    La fecha final debe tener máximo 50
+                                    carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option value="1">PENDIENTE</option>
+                                    <option value="2">CONTRATADO</option>
+                                    <option value="3">PROCESO</option>
+                                    <option value="4">TERMINADO</option>
+                                    <option value="5">CANCELADO</option>
+                                    <option value="6">ANULADO</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.contratoForm.get('estatus').touched && this.contratoForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+
+                            </div>
+
+                            <button [disabled]="this.contratoForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button type="reset" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-7 col-xlg-8">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Contrato</th>
+                                <th>Monto</th>
+                                <th>Estatus Contrato</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let contrato of contratos">
+                                <th scope="row">{{ contrato.id | number}}</th>
+                                <td>{{ contrato.concepto }}</td>
+                                <td>{{ contrato.monto | number }}</td>
+                                <td>{{ contrato.notificas_id.nombre }}</td>
+                                <td>{{ contrato.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ contrato.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, contrato)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.contratos.length < 1">
+                                <td colspan="10">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar notificacion</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar el contrato <span
+                                    class="text-primary">"#{{ this.contrato.id }}"</span>
+                                de la lista de contratos?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a este contrato será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

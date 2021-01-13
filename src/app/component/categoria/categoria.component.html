@@ -1,0 +1,227 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Categorías</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item">Categorías</li>
+            <li class="breadcrumb-item active">categoría</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-5 col-xlg-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="box-title m-b-0">Nueva categoría</h3>
+                <p class="text-muted m-b-30 font-13">Categoría </p>
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+                        <form [formGroup]="categoriaForm" (ngSubmit)="this.submit()">
+
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <!-- [(ngModel)]="this.categoria.nombre" -->
+                                <input formControlName="nombre" type="text" class="form-control" name="nombre"
+                                    placeholder="Agregar nombre">
+
+                                <span
+                                    *ngIf="this.categoriaForm.get('nombre').touched && this.categoriaForm.get('nombre').invalid">
+                                    Introduzca un nombre
+                                </span>
+                                <span *ngIf="this.categoriaForm.get('nombre').errors?.maxlength">
+                                    El nombre debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <!-- [(ngModel)]="this.categoria.descripcion" -->
+                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion"
+                                    placeholder="Agregar descripcion">
+
+                                <span
+                                    *ngIf="this.categoriaForm.get('descripcion').touched && this.categoriaForm.get('descripcion').invalid">
+                                    Introduzca la descripción
+                                </span>
+                                <span *ngIf="this.categoriaForm.get('descripcion').errors?.maxlength">
+                                    La descripción debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="font_type">Font Type</label>
+                                <input formControlName="font_type" type="text" class="form-control" name="font_type"
+                                    placeholder="Agregar Font Type">
+
+                                <span
+                                    *ngIf="this.categoriaForm.get('font_type').touched && this.categoriaForm.get('font_type').invalid">
+                                    Introduzca el font type
+                                </span>
+                                <span *ngIf="this.categoriaForm.get('font_type').errors?.maxlength">
+                                    El Font Type debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input formControlName="name" type="text" class="form-control" name="name"
+                                    placeholder="Agregar name">
+
+                                <span
+                                    *ngIf="this.categoriaForm.get('name').touched && this.categoriaForm.get('name').invalid">
+                                    Introduzca el name
+                                </span>
+                                <span *ngIf="this.categoriaForm.get('name').errors?.maxlength">
+                                    El name debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <!-- [(ngModel)]="this.categoria.estatus" -->
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option>A</option>
+                                    <option>I</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.categoriaForm.get('estatus').touched && this.categoriaForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+                            </div>
+
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"
+                                [disabled]="this.categoriaForm.invalid">Enviar</button>
+                            <button type="reset" class="btn btn-inverse waves-effect waves-light"
+                                (click)="this.reset()">Cancelar</button>
+
+                            <ngb-alert *ngIf="success" type="success" (close)="success = null" class="mt-1">
+                                <h4 class="alert-heading">{{ success.code }}</h4>
+                                <p>{{ success.message }}</p>
+                            </ngb-alert>
+
+                            <ngb-alert *ngIf="error" type="danger" (close)="error = null">
+                                <h4 class="alert-heading">{{ error.status }}</h4>
+                                <p>{{ error.message }}</p>
+                            </ngb-alert>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-7 col-xlg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nro</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Font Type</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Estatus</th>
+                                <th scope="col">Creado</th>
+                                <th scope="col">Actualizado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let categoria of categorias">
+                                <th scope="row">{{ categoria.id | number}}</th>
+                                <td>
+                                    {{ categoria.nombre }}
+                                </td>
+                                <td>{{ categoria.descripcion }}</td>
+                                <td>{{ categoria.font_type }}</td>
+                                <td>{{ categoria.name }}</td>
+                                <td>{{ categoria.estatus }}</td>
+                                <td>{{ categoria.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ categoria.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, this.categoria)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline"
+                                        (click)="consultar(categoria)">
+                                        <i class="ti-pencil-alt" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+
+                        <!-- <select class="custom-select" style="width: auto" [(ngModel)]="pageSize"
+                            (ngModelChange)="refreshCategorias()">
+                            <option [ngValue]="5">5 elementos por página</option>
+                            <option [ngValue]="10">10 elementos por página</option>
+                            <option [ngValue]="15">15 elementos por página</option>
+                        </select> -->
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar categoría</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar la categoría <span
+                                    class="text-primary">"{{ this.categoria.nombre }}"</span>
+                                de la lista de categorías?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a esta categoría será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

@@ -1,0 +1,493 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Facturas</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Factura</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-3 col-xlg-2">
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Busqueda</h3>
+                <p class="text-muted m-b-30 font-13">busqueda usuario </p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="this.facturaForm" (ngSubmit)="this.listar()">
+
+                            <div class="form-group">
+                                <label for="usuarios_id">Usuario ID</label>
+
+                                <input formControlName="usuarios_id" type="number" class="form-control"
+                                    name="usuarios_id" placeholder="Agregar usuario ID">
+
+                                <span
+                                    *ngIf="this.facturaForm.get('usuarios_id').touched && this.facturaForm.get('usuarios_id').invalid">
+                                    Introduzca un ID de usuario
+                                </span>
+                                <span *ngIf="this.facturaForm.get('usuarios_id').errors?.maxlength">
+                                    El ID de usuario debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="forma_pagos_id">Forma de pago ID</label>
+
+                                <input formControlName="forma_pagos_id" type="text" class="form-control"
+                                    name="forma_pagos_id" placeholder="Agregar forma de pago ID">
+
+                                <span
+                                    *ngIf="this.facturaForm.get('forma_pagos_id').touched && this.facturaForm.get('forma_pagos_id').invalid">
+                                    Introduzca un ID de forma de pago
+                                </span>
+                                <span *ngIf="this.facturaForm.get('forma_pagos_id').errors?.maxlength">
+                                    El ID de forma de pago debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="monedas_id">Moneda ID</label>
+
+                                <input formControlName="monedas_id" type="text" class="form-control" name="monedas_id"
+                                    placeholder="Agregar moneda ID">
+
+                                <span
+                                    *ngIf="this.facturaForm.get('monedas_id').touched && this.facturaForm.get('monedas_id').invalid">
+                                    Introduzca un moneda ID
+                                </span>
+                                <span *ngIf="this.facturaForm.get('monedas_id').errors?.maxlength">
+                                    La moneda ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tarifas_id">Tarifa ID</label>
+
+                                <input formControlName="tarifas_id" type="text" class="form-control" name="tarifas_id"
+                                    placeholder="Agregar tarifa ID">
+
+                                <span
+                                    *ngIf="this.facturaForm.get('tarifas_id').touched && this.facturaForm.get('tarifas_id').invalid">
+                                    Introduzca una tarifa ID
+                                </span>
+                                <span *ngIf="this.facturaForm.get('tarifas_id').errors?.maxlength">
+                                    La tarifa ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contratos_id">Contrato ID</label>
+
+                                <input formControlName="contratos_id" type="text" class="form-control"
+                                    name="contratos_id" placeholder="Agregar contrato ID">
+
+                                <span
+                                    *ngIf="this.facturaForm.get('contratos_id').touched && this.facturaForm.get('contratos_id').invalid">
+                                    Introduzca un contrato ID
+                                </span>
+                                <span *ngIf="this.facturaForm.get('contratos_id').errors?.maxlength">
+                                    El contrato ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fe_inicio">Fecha inicio</label>
+
+                                <input formControlName="fe_inicio" type="text" class="form-control" name="fe_inicio"
+                                    placeholder="Agregar fecha de inicio">
+
+                                <span *ngIf="this.facturaForm.get('fe_inicio').errors?.pattern">
+                                    La fecha inicio debe tener el formato dd-MM-YYYY
+                                </span>
+                                <span *ngIf="this.facturaForm.get('fe_inicio').errors?.maxlength">
+                                    La fecha inicio debe tener máximo 50
+                                    carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fe_final">Fecha final</label>
+
+                                <input formControlName="fe_final" type="text" class="form-control" name="fe_final"
+                                    placeholder="Agregar fecha fnial">
+
+                                <span *ngIf="this.facturaForm.get('fe_final').errors?.pattern">
+                                    La fecha final debe tener el formato dd-MM-YYYY
+                                </span>
+                                <span *ngIf="this.facturaForm.get('fe_final').errors?.maxlength">
+                                    La fecha final debe tener máximo 50
+                                    carateres
+                                </span>
+                            </div>
+
+                            <button [disabled]="this.facturaForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button (click)="this.reset()" type="reset"
+                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-9 col-xlg-10">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Monto</th>
+                                <th>Cantidad</th>
+                                <th>Concepto</th>
+                                <th>Usuario</th>
+                                <th>Tarifa</th>
+                                <th>Nro contrato</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let factura of facturas">
+                                <th scope="row">{{ factura.id | number}}</th>
+                                <td>{{ factura.monto | number }}</td>
+                                <td>{{ factura.cantidad | number }}</td>
+                                <td>{{ factura.concepto }}</td>
+                                <td>{{ factura.usuario.email }}</td>
+                                <td>{{ factura.tarifa.tarifa }}</td>
+                                <td>{{ factura.contrato.id | number }}</td>
+                                <td>{{ factura.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ factura.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, factura)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="this.open(content, factura)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.facturas.length < 1">
+                                <td colspan="10">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar factura</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar la factura <span
+                                    class="text-primary">"#{{ this.factura.id }}"</span>
+                                de la lista de facturas?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a esta factura será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+                <ng-template #content let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Factura</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-body">
+
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)"
+                                    class="nav-tabs">
+
+                                    <li [ngbNavItem]="1">
+
+                                        <a ngbNavLink>Datos factura</a>
+
+                                        <ng-template ngbNavContent>
+
+                                            <form class="form-horizontal" role="form">
+
+                                                <div class="form-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Monto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.monto | number }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Monto
+                                                                    total:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.montoTotal | number }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                    <!--/row-->
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Cantidad:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.cantidad | number }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Concepto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.concepto }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Usuario:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.usuario.email }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Forma de
+                                                                    pago:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.formaPago.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Moneda:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.moneda.moneda_iso }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Tarifa:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.tarifa.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Creado:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.created_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Modificado:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.factura.updated_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </ng-template>
+
+                                    </li>
+
+                                </ul>
+
+                                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button> -->
+                        <button ngbAutofocus type="button" (click)="modal.close('Close click')"
+                            class="btn btn-inverse waves-effect waves-light">Cerrar</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

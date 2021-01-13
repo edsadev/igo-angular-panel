@@ -1,0 +1,233 @@
+<!-- ============================================================== -->
+<!-- Main wrapper Dashboard - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-light">
+
+            <div class="navbar-collapse">
+                <!-- ============================================================== -->
+                <!-- toggle and nav items -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav mr-auto">
+                    <!-- This is  -->
+                    <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                            href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark"
+                            href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+
+                </ul>
+                <!-- ============================================================== -->
+                <!-- User profile and search -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav my-lg-0">
+                    <!-- ============================================================== -->
+                    <!-- Search -->
+                    <!-- ============================================================== -->
+                    
+                    <!-- ============================================================== -->
+                    <!-- Language -->
+                    <!-- ============================================================== -->
+                    
+                    <!-- ============================================================== -->
+                    <!-- Profile -->
+                    <!-- ============================================================== -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img src="assets/img/logo.png" alt="user" class="profile-pic" />
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                            <ul class="dropdown-user">
+                                <li>
+                                    <div class="dw-user-box">
+                                        <div class="u-img"><img src="assets/img/logo.png" alt="user">
+                                        </div>
+                                        <div class="u-text">
+                                            <h4 class="usuario"></h4>
+                                            <p class="text-muted correo"></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li><a routerLink="profile"><i class="ti-user"></i> Mi perfl</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a class="logout" (click)="logout()"><i class="fa fa-power-off"></i> Cerrar
+                                        sesión</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li class="user-profile">
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                            <img src="assets/img/logo.png" alt="user" /><span
+                                class="hide-menu usuario"></span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="profile">Mi perfil</a></li>
+                            <!--<li><a href="#">Configuración</a></li>-->
+                            <li><a class="logout" (click)="logout()">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-devider"></li>
+                    <li class="nav-small-cap">Panel</li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-gauge"></i><span class="hide-menu">Categorías </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/categoria" routerLinkActive="active">Listar Categorías</a>
+                            </li>
+                            <li><a routerLink="/dashboard/subcategoria" routerLinkActive="active">Listar
+                                    Subcategorías</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-account-multiple"></i><span class="hide-menu">Denuncias </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/denuncia" routerLinkActive="active">Listar denuncias</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-currency-usd"></i><span class="hide-menu">Monedas</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/moneda" routerLinkActive="active">Listar monedas</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-credit-card-multiple"></i><span class="hide-menu">Formas de
+                                pagos</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/pago" routerLinkActive="active">Listar forma de pago</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-tag-multiple"></i><span class="hide-menu">Perfiles </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/perfil" routerLinkActive="active">Listar perfiles</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-forum"></i><span class="hide-menu">Contratos </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/contrato" routerLinkActive="active">Listar
+                                    contratos</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-square-inc-cash"></i><span class="hide-menu">Tarifas </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/tarifa">Listar tarifas</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-clock-fast"></i><span class="hide-menu">Servicios </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/servicio">Listar servicios</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-library-books"></i><span class="hide-menu">Facturas </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/factura">Listar facturas</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-book-open-page-variant"></i><span class="hide-menu">Retiros </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/retiro" routerLinkActive="active">Listar solicitudes de
+                                    retiros</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-account-multiple"></i><span class="hide-menu">Usuarios </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/usuario" routerLinkActive="active">Listar usuarios</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-comment-outline"></i><span class="hide-menu">Comentarios </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/comentario" routerLinkActive="active">Listar comentarios</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i
+                                class="mdi mdi-coin"></i><span class="hide-menu">Paymentez</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a routerLink="/dashboard/paymentez" routerLinkActive="active">Listar paymentez</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+
+            <router-outlet></router-outlet>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer"> © 2020 IGo by syftedesigns.com </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->

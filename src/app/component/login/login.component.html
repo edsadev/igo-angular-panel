@@ -1,0 +1,117 @@
+<!-- ============================================================== -->
+<!-- Main wrapper Login - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<section id="wrapper">
+
+    <div class="login-register">
+
+        <div class="login-box card">
+
+            <div class="card-body">
+
+                <form class="form-horizontal form-material" [formGroup]="loginForm" (ngSubmit)="signIn()">
+
+                    <h3 class="box-title m-b-20">Iniciar Sesión</h3>
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <!-- <input class="form-control" [(ngModel)]="login.usuario" type="text" placeholder="Username"
+                                 name="usuario" required="" maxlength="50"> -->
+                            <input class="form-control" type="text" placeholder="Username" formControlName="usuario"
+                                name="usuario" required="" maxlength="50">
+
+                            <!-- <span *ngIf="this.loginForm.get('usuario').errors?.required">
+                                Introduzca un usuario o email
+                            </span> -->
+                            <span *ngIf="this.loginForm.get('usuario').touched && this.loginForm.get('usuario').invalid">
+                                Introduzca un usuario o email
+                            </span>
+                            <span *ngIf="this.loginForm.get('usuario').errors?.maxlength">
+                                El usuario debe tener máximo 50 carateres
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <!-- <input class="form-control" [(ngModel)]="login.clave" type="password" placeholder="Password"
+                                 name="clave" required="" maxlength="50"> -->
+                            <input class="form-control" type="password" placeholder="Password" formControlName="clave"
+                                name="clave" required="" maxlength="50">
+
+                            <!-- <span *ngIf="this.loginForm.get('clave').errors?.required">
+                                Introduzca una clave
+                            </span> -->
+                            <span *ngIf="this.loginForm.get('clave').touched && this.loginForm.get('clave').invalid">
+                                Introduzca una clave
+                            </span>
+                            <span *ngIf="this.loginForm.get('clave').errors?.maxlength">
+                                La clave debe tener máximo 50 carateres
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="checkbox checkbox-info pull-left p-t-0">
+                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                                <label for="checkbox-signup"> Recuerdame </label>
+                            </div>
+                            <a href="javascript:void(0)" class="text-dark pull-right to-recover"><i
+                                    class="fa fa-lock m-r-5"></i> ¿Olvidó su clave?</a>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20">
+                            <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit"
+                                [disabled]="loginForm.invalid">Entrar</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <form class="form-horizontal d-none">
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <h3>Recuperar clave</h3>
+                            <p class="text-muted">Introduzca su email y las instrucciones serán enviadas</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" required="" placeholder="Email"> </div>
+                    </div>
+
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
+                                type="submit">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <a href="javascript:void(0)" class="text-dark pull-right to-recover"><i
+                                    class="fa fa-lock m-r-5"></i> Iniciar sesión</a>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="alert alert-danger" role="alert" *ngIf="error">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{error.message}}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

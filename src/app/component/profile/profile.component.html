@@ -1,0 +1,152 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Mi Perfil</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Mi perfil</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<!-- Row -->
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+        <div class="card"> <img class="card-img" src="assets/img/logo.png"
+                alt="Card image">
+            <div class="card-img-overlay card-inverse social-profile d-flex ">
+                <div class="align-self-center">
+                    <img *ngIf="this.usuario.foto || this.cardImageBase64; else elseTemplate"
+                        [src]="this.usuario.foto ? this.usuario.foto:this.cardImageBase64" class="img-circle"
+                        width="100">
+
+                    <ng-template #elseTemplate>
+                        <img src="assets/img/logo.png" class="img-circle" width="100">
+                    </ng-template>
+
+                    <h4 class="card-subtitle">{{ this.usuario.email }}</h4>
+                    <h6 class="text-white">{{ this.usuario.direccion }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <small class="text-muted">Email</small>
+                <h6 class="correo">{{ this.usuario.email }}</h6>
+                <small class="text-muted p-t-30 db">Dirección</small>
+                <h6 class="direccion">{{ this.usuario.direccion }}</h6>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-horizontal form-material" [formGroup]="usuarioForm" (ngSubmit)="this.update()">
+                    <div class="form-group">
+                        <label class="col-md-12">Nombre</label>
+                        <div class="col-md-12">
+                            <input formControlName="nombre" type="text" placeholder="Nombre completo" name="nombre"
+                                class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Apellido</label>
+                        <div class="col-md-12">
+                            <input formControlName="apellido" type="text" placeholder="Apellido completo"
+                                name="apellido" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Email</label>
+                        <div class="col-md-12">
+                            <input formControlName="email" type="email" placeholder="email@admin.com" name="email"
+                                class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Clave</label>
+                        <div class="col-md-12">
+                            <input formControlName="password" type="password" name="password"
+                                class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Dirección</label>
+                        <div class="col-md-12">
+                            <textarea formControlName="direccion" rows="5" name="direccion"
+                                class="form-control form-control-line">
+                                {{ this.usuario.direccion }}
+                            </textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-12">Perfil</label>
+                        <div class="col-sm-12">
+                            <select formControlName="roles_id" class="form-control form-control-line" name="roles_id">
+                                <option value="1">ADMINISTRADOR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-sm-12">Foto</label>
+                        <div class="col-md-12">
+                            <input formControlName="foto" (change)="fileChangeEvent($event)" type="file" name="foto"
+                                class="form-control form-control-line">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button [disabled]="this.usuarioForm.invalid" type="submit"
+                                class="btn btn-info">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <ngb-alert *ngIf="success" type="success" (close)="success = null">
+                    <h4 class="alert-heading">{{ success.code }}</h4>
+                    <p>{{ success.message }}</p>
+                </ngb-alert>
+
+                <ngb-alert *ngIf="error" type="danger" (close)="error = null">
+                    <h4 class="alert-heading">{{ error.status }}</h4>
+                    <p>{{ error.message }}</p>
+                </ngb-alert>
+
+                <!-- <div class="alert alert-danger" role="alert" *ngIf="error">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{error.message}}
+                </div>
+
+                <div class="alert alert-success" role="alert" *ngIf="success">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="alert-heading">{{ success['202'] }}</h4>
+                    <p>{{ success.message }}</p>
+                </div> -->
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

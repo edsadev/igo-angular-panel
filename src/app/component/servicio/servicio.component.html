@@ -1,0 +1,562 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Servicios</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Servicio</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-3 col-xlg-2">
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Busqueda</h3>
+                <p class="text-muted m-b-30 font-13">busqueda usuario </p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="this.servicioForm" (ngSubmit)="this.listar()">
+
+                            <div class="form-group">
+                                <label for="categorias_id">Categoría ID</label>
+
+                                <input formControlName="categorias_id" type="number" class="form-control"
+                                    name="categorias_id" placeholder="Agregar categoría ID">
+
+                                <span
+                                    *ngIf="this.servicioForm.get('categorias_id').touched && this.servicioForm.get('categorias_id').invalid">
+                                    Introduzca un ID de categoría
+                                </span>
+                                <span *ngIf="this.servicioForm.get('categorias_id').errors?.maxlength">
+                                    El ID de categoría debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sub_categorias_id">Subcategoría ID</label>
+
+                                <input formControlName="sub_categorias_id" type="text" class="form-control"
+                                    name="sub_categorias_id" placeholder="Agregar subcategoría ID">
+
+                                <span
+                                    *ngIf="this.servicioForm.get('sub_categorias_id').touched && this.servicioForm.get('sub_categorias_id').invalid">
+                                    Introduzca un ID de subcategoria
+                                </span>
+                                <span *ngIf="this.servicioForm.get('sub_categorias_id').errors?.maxlength">
+                                    El ID de subcategoria debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cliente_id">Cliente ID</label>
+
+                                <input formControlName="cliente_id" type="text" class="form-control" name="cliente_id"
+                                    placeholder="Agregar cliente ID">
+
+                                <span
+                                    *ngIf="this.servicioForm.get('cliente_id').touched && this.servicioForm.get('cliente_id').invalid">
+                                    Introduzca un cliente ID
+                                </span>
+                                <span *ngIf="this.servicioForm.get('cliente_id').errors?.maxlength">
+                                    El cliente ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="proveedor_id">Proveedor ID</label>
+
+                                <input formControlName="proveedor_id" type="text" class="form-control"
+                                    name="proveedor_id" placeholder="Agregar proveedor ID">
+
+                                <span
+                                    *ngIf="this.servicioForm.get('proveedor_id').touched && this.servicioForm.get('proveedor_id').invalid">
+                                    Introduzca un proveedor ID
+                                </span>
+                                <span *ngIf="this.servicioForm.get('proveedor_id').errors?.maxlength">
+                                    El proveedor ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="proveedores">Proveedores</label>
+
+                                <select formControlName="proveedores" class="form-control" name="proveedores">
+                                    <option value="">SELECCCIONE</option>
+                                    <option value="1">Verdadero</option>
+                                    <option value="0">Falso</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.servicioForm.get('proveedores').touched && this.servicioForm.get('proveedores').invalid">
+                                    Seleccione un valor
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="clientes">Clientes</label>
+
+                                <select formControlName="clientes" class="form-control" name="clientes">
+                                    <option value="">SELECCCIONE</option>
+                                    <option value="1">Verdadero</option>
+                                    <option value="0">Falso</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.servicioForm.get('clientes').touched && this.servicioForm.get('clientes').invalid">
+                                    Seleccione un valor
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="verificado">Estatus</label>
+
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option value="A">Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.servicioForm.get('estatus').touched && this.servicioForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+                            </div>
+
+                            <button [disabled]="this.servicioForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button (click)="this.reset()" type="reset"
+                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--Little Profile widget-->
+    <div class="col-lg-9 col-xlg-10">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                                <th>Subcategoría</th>
+                                <th>Usuario</th>
+                                <th>Estatus</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let servicio of servicios">
+                                <th scope="row">{{ servicio.id | number}}</th>
+                                <td>{{ servicio.titulo }}</td>
+                                <td>{{ servicio.descripcion }}</td>
+                                <td>{{ servicio.monto | number }}</td>
+                                <td>{{ servicio.subCategorias[0].nombre }}</td>
+                                <td>{{ servicio.cliente ? servicio.cliente.email: servicio.proveedor.email }}</td>
+                                <td>
+                                    <span [ngSwitch]="servicio.estatus">
+                                        <span *ngSwitchCase="'A'">Activo</span>
+                                        <span *ngSwitchCase="'I'">Inactivo</span>
+                                        <span *ngSwitchCase="'E'">Eliminado</span>
+                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    </span>
+                                </td>
+                                <td>{{ servicio.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ servicio.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, servicio)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="this.open(content, servicio)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.servicios.length < 1">
+                                <td colspan="10">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar tarifa</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar el servicio <span
+                                    class="text-primary">"{{ this.servicio.titulo }}"</span>
+                                de la lista de servicios?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a este servicio será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+                <ng-template #content let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Servicio</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-body">
+
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)"
+                                    class="nav-tabs">
+
+                                    <li [ngbNavItem]="1">
+
+                                        <a ngbNavLink>Datos servicio</a>
+
+                                        <ng-template ngbNavContent>
+
+                                            <form class="form-horizontal" role="form">
+
+                                                <div class="form-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Tipo de
+                                                                    proyecto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        <span [ngSwitch]="servicio.tipo_proyecto">
+                                                                            <span *ngSwitchCase="'P'">Por
+                                                                                proyecto</span>
+                                                                            <span *ngSwitchCase="'H'">Por horas</span>
+                                                                            <span *ngSwitchDefault>(Tipo proyecto no
+                                                                                existe)</span>
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Título:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.titulo }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                    <!--/row-->
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Descripción:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.descripcion }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Monto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.monto | number }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Fecha
+                                                                    solicitada:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.fecha_solicitada | date:'dd/MM/y' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Hora
+                                                                    solicitada:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.hora_solicitada | date:'hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Estatus:</label>
+                                                                <div class="col-md-9">
+                                                                    <span [ngSwitch]="servicio.estatus">
+                                                                        <p *ngSwitchCase="'A'"
+                                                                            class="form-control-static">Activo</p>
+                                                                        <p *ngSwitchCase="'I'"
+                                                                            class="form-control-static">Inactivo</p>
+                                                                        <p *ngSwitchCase="'E'"
+                                                                            class="form-control-static">Eliminado</p>
+                                                                        <p *ngSwitchDefault class="form-control-static">
+                                                                            (Estatus no existe)
+                                                                        </p>
+                                                                    </span>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Categoría:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.subCategorias[0].categorias.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Creado:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.created_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Modificado:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.servicio.updated_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label text-center col-md-12">Foto</label>
+                                                                <div class="col-md-12">
+
+                                                                    <img style="max-width: 600px;" *ngIf="this.servicio.foto"
+                                                                        [src]="this.servicio.foto"
+                                                                        class="rounded mx-auto d-block"
+                                                                        alt="Foto" />
+                                                                    
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label text-center col-md-12">Extra fotos</label>
+                                                                <div class="col-md-12">
+
+                                                                    <img style="max-width: 600px;" *ngFor="let foto of this.servicio.extraFotos"
+                                                                        [src]="foto"
+                                                                        class="rounded mx-auto d-block"
+                                                                        alt="Foto" />
+                                                                    
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </ng-template>
+
+                                    </li>
+
+                                </ul>
+
+                                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button> -->
+                        <button ngbAutofocus type="button" (click)="modal.close('Close click')"
+                            class="btn btn-inverse waves-effect waves-light">Cerrar</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->

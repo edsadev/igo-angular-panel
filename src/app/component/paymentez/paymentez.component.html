@@ -1,0 +1,672 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Paymentez</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Paymentez</li>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <!--Little Profile widget-->
+    <div class="col-lg-3 col-xlg-2">
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="box-title m-b-0">Busqueda</h3>
+                <p class="text-muted m-b-30 font-13">busqueda paymentez</p>
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12">
+
+                        <form [formGroup]="paymentezForm" (ngSubmit)="this.listar()">
+
+                            <div class="form-group">
+                                <label for="usuarios_id">ID</label>
+
+                                <input formControlName="usuarios_id" type="number" class="form-control"
+                                    name="usuarios_id" placeholder="Agregar usuario ID">
+
+                                <span
+                                    *ngIf="this.paymentezForm.get('usuarios_id').touched && this.paymentezForm.get('usuarios_id').invalid">
+                                    Introduzca un usuario ID
+                                </span>
+                                <span *ngIf="this.paymentezForm.get('usuarios_id').errors?.maxlength">
+                                    El usuario ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="monedas_id">Moneda ID</label>
+
+                                <input formControlName="monedas_id" type="text" class="form-control" name="monedas_id"
+                                    placeholder="Agregar moneda ID">
+
+                                <span
+                                    *ngIf="this.paymentezForm.get('monedas_id').touched && this.paymentezForm.get('monedas_id').invalid">
+                                    Introduzca una moneda ID
+                                </span>
+                                <span *ngIf="this.paymentezForm.get('monedas_id').errors?.maxlength">
+                                    La moneda ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="forma_pagos_id">Forma pago ID</label>
+
+                                <input formControlName="forma_pagos_id" type="text" class="form-control" name="forma_pagos_id"
+                                    placeholder="Agregar forma de pago ID">
+
+                                <span
+                                    *ngIf="this.paymentezForm.get('forma_pagos_id').touched && this.paymentezForm.get('forma_pagos_id').invalid">
+                                    Introduzca una forma de pago ID
+                                </span>
+                                <span *ngIf="this.paymentezForm.get('forma_pagos_id').errors?.maxlength">
+                                    La moneda ID debe tener máximo 50 carateres
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <select formControlName="estatus" class="form-control" name="estatus">
+                                    <option>A</option>
+                                    <option>I</option>
+                                </select>
+
+                                <span
+                                    *ngIf="this.paymentezForm.get('estatus').touched && this.paymentezForm.get('estatus').invalid">
+                                    Seleccione un valor
+                                </span>
+                            </div>
+
+                            <button [disabled]="this.paymentezForm.invalid" type="submit"
+                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button type="reset" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--Little Profile widget-->
+    <div class="col-lg-9 col-xlg-10">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Email</th>
+                                <th>Forma de pago</th>
+                                <th>Moneda</th>
+                                <th>Trasacction ID</th>
+                                <th>Monto</th>
+                                <th>Estatus</th>
+                                <th>Creado</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let paymentez of paymentezs">
+                                <th scope="row">{{ paymentez.id | number}}</th>
+                                <td>{{ paymentez.usuario.email }}</td>
+                                <td>{{ paymentez.formaPago.nombre }}</td>
+                                <td>{{ paymentez.moneda.moneda_iso | uppercase }}</td>
+                                <td>{{ paymentez.transactionId }}</td>
+                                <td>{{ paymentez.monto | number }}</td>
+                                <td>
+                                    <span [ngSwitch]="paymentez.estatus">
+                                        <span *ngSwitchCase="'A'">Activo</span>
+                                        <span *ngSwitchCase="'I'">Inactivo</span>
+                                        <span *ngSwitchCase="'E'">Eliminado</span>
+                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    </span>
+                                </td>
+                                <td>{{ paymentez.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>{{ paymentez.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                <td>
+                                    <button (click)="this.open(confirm, paymentez)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="ti-close" aria-hidden="true"></i>
+                                    </button>
+                                    <button (click)="this.open(content, paymentez)" type="button"
+                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="this.paymentezs.length < 1">
+                                <td colspan="10">
+                                    <p class="text-danger text-center">{{ this.error.message }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="listar()">
+                        </ngb-pagination>
+                    </div>
+
+                </div>
+
+                <ng-template #confirm let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar paymentez</h4>
+                        <button type="button" class="close" aria-label="Close button"
+                            (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>¿Tú estás seguro que quieres eliminar el paymentez <span
+                                    class="text-primary">"#{{ this.paymentez.id }}"</span>
+                                de la lista de paymentezs?
+                            </strong>
+                        </p>
+                        <p>Toda la información asociada a este paymentez será eliminada permanentemente.
+                            <span class="text-danger">Esta operación no puede ser deshecha.</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger"
+                            (click)="modal.close('Eliminar')">Ok</button>
+                    </div>
+
+                </ng-template>
+
+                <ng-template #content let-modal>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Paymentez</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-body">
+
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)"
+                                    class="nav-tabs">
+
+                                    <li [ngbNavItem]="1">
+
+                                        <a ngbNavLink>Datos Paymentez</a>
+
+                                        <ng-template ngbNavContent>
+
+                                            <form class="form-horizontal" role="form">
+
+                                                <div class="form-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Forma de pago:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.formaPago.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Moneda:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.moneda.moneda_iso | uppercase }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                    <!--/row-->
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Transacction ID:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.transactionId }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Monto:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.monto | number}}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Decripción:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.descripcion }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Estatus:</label>
+                                                                <div class="col-md-9">
+                                                                    <span *ngIf="this.paymentez.estatus"
+                                                                        [ngSwitch]="this.paymentez.estatus">
+                                                                        <p *ngSwitchCase="'A'"
+                                                                            class="form-control-static">
+                                                                            Activo</p>
+                                                                        <p *ngSwitchCase="'I'"
+                                                                            class="form-control-static">
+                                                                            Inactivo</p>
+                                                                        <p *ngSwitchCase="'E'"
+                                                                            class="form-control-static">
+                                                                            Eliminado</p>
+                                                                        <p *ngSwitchDefault class="form-control-static">
+                                                                            (Estatus
+                                                                            no existe)
+                                                                        </p>
+                                                                    </span>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Creado:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.created_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Modificado:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.updated_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </ng-template>
+
+                                    </li>
+
+                                    <li [ngbNavItem]="2">
+
+                                        <a ngbNavLink>Datos usuario</a>
+
+                                        <ng-template ngbNavContent>
+
+                                            <form class="form-horizontal" role="form">
+
+                                                <div class="form-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Nombre:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.nombre }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Apellido:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.apellido }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                    <!--/row-->
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Email:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.email }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Dirección:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.direccion }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Latitud:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.latitud }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Longitud:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.longitud }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Ciudad:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.ciudad }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Teléfono:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.telefono }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Estatus:</label>
+                                                                <div class="col-md-9">
+                                                                    <span *ngIf="this.paymentez.usuario.estatus"
+                                                                        [ngSwitch]="this.paymentez.usuario.estatus">
+                                                                        <p *ngSwitchCase="'A'"
+                                                                            class="form-control-static">
+                                                                            Activo</p>
+                                                                        <p *ngSwitchCase="'I'"
+                                                                            class="form-control-static">
+                                                                            Inactivo</p>
+                                                                        <p *ngSwitchCase="'E'"
+                                                                            class="form-control-static">
+                                                                            Eliminado</p>
+                                                                        <p *ngSwitchDefault class="form-control-static">
+                                                                            (Estatus
+                                                                            no existe)
+                                                                        </p>
+                                                                    </span>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label class="control-label col-md-3">Creado:</label>
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.created_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label col-md-3">Modificado:</label>
+
+                                                                <div class="col-md-9">
+                                                                    <p class="form-control-static">
+                                                                        {{ this.paymentez.usuario.updated_at | date:'dd/MM/y hh:mm:ss a' }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="form-group row">
+
+                                                                <label
+                                                                    class="control-label text-center col-md-12">Foto</label>
+                                                                <div class="col-md-12">
+                                                                    <img style="max-width: 600px;" *ngIf="this.paymentez.usuario.foto"
+                                                                        src="{{ this.paymentez.usuario.foto }}"
+                                                                        class="rounded mx-auto d-block" alt="Imagen" />
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </ng-template>
+
+                                    </li>
+
+                                </ul>
+
+                                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button> -->
+                        <button ngbAutofocus type="button" (click)="modal.close('Close click')"
+                            class="btn btn-inverse waves-effect waves-light">Cerrar</button>
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->
