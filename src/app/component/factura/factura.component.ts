@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbCalendar, NgbDateParserFormatter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { FacturaService } from '../../service/factura.service';
 import { Pagination } from 'src/app/interface/pagination';
 import { Error } from 'src/app/interface/error';
 import { Factura } from '../../interface/factura';
+import { Contrato } from 'src/app/interface/contrato';
+import { Usuario } from 'src/app/interface/usuario';
+import { UsuarioService } from 'src/app/service/usuario.service';
+import { ContratoService } from 'src/app/service/contrato.service';
 
 @Component({
   selector: 'app-factura',
@@ -18,18 +22,22 @@ export class FacturaComponent implements OnInit {
 
   private httpParams: HttpParams;
   public facturaForm: FormGroup = new FormGroup({
-    usuarios_id: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
-    forma_pagos_id: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
-    monedas_id: new FormControl('', [Validators.minLength(1), Validators.maxLength(50)]),
-    tarifas_id: new FormControl('', [Validators.minLength(1), Validators.maxLength(50)]),
-    contratos_id: new FormControl('', [Validators.minLength(1), Validators.maxLength(50)]),
-    fe_inicio: new FormControl('', [Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/)]),// /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/ <- ESTO SIRVE
-    fe_final: new FormControl('', [Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/)]),
+    usuarios_id: new FormControl('', []),
+    forma_pagos_id: new FormControl('', []),
+    monedas_id: new FormControl('', []),
+    tarifas_id: new FormControl('', []),
+    contratos_id: new FormControl('', []),
+    fe_inicio: new FormControl('', []),// /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/ <- ESTO SIRVE
   });
+
   public error: Error;
   public facturas: Array<Factura>;
+  public contratos: Array<Contrato>;
+  public usuarios: Array<Usuario>;
   public page: number = 1;
   public pageSize: number = 5;
+  public successBoolean: boolean = false;
+  public errBoolean: boolean = false;
   public collectionSize: number = 0;
   public factura: Factura;
 
@@ -37,7 +45,11 @@ export class FacturaComponent implements OnInit {
 
   constructor(
     private facturaService: FacturaService,
-    private modalService: NgbModal) {
+    private usuarioService: UsuarioService,
+    private contratoService: ContratoService,
+    private modalService: NgbModal,
+    private calendar: NgbCalendar,
+    public formatter: NgbDateParserFormatter) {
 
     this.facturas = [];
 
@@ -55,15 +67,20 @@ export class FacturaComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-
+  async ngOnInit() {
+    this.contratos = await this.listarContratos();
+    this.usuarios = await this.listarUsuariosPorRol('3');
     this.listar();
+
   }
 
   /**
    * listar
    */
-  public listar(): void {
+  public listar(ev?: any): void {
+
+    this.errBoolean = false;
+    this.successBoolean = false;
 
     this.httpParams = new HttpParams().set('page', String(this.page)).set('per_page', String(this.pageSize));
 
@@ -88,7 +105,9 @@ export class FacturaComponent implements OnInit {
     }
 
     if (this.facturaForm.value.fe_inicio) {
-      this.httpParams = this.httpParams.set('fe_inicio', this.facturaForm.value.fe_inicio);
+
+      const dateFormatter = this.formatter.format(this.facturaForm.value.fe_inicio);
+      this.httpParams = this.httpParams.set('fe_inicio', dateFormatter);
     }
 
     if (this.facturaForm.value.fe_final) {
@@ -100,9 +119,18 @@ export class FacturaComponent implements OnInit {
 
         this.facturas = response.data;
         this.collectionSize = response.total;
+        if (ev !== null && ev !== undefined) {
+          this.errBoolean = false;
+          this.successBoolean = true;
+        }
       },
       (error: HttpErrorResponse) => {
         console.log(error);
+
+        if (ev !== null && ev !== undefined) {
+          this.errBoolean = true;
+          this.successBoolean = false;
+        }
 
         if (error.status == 401 || error.status == 403 || error.status == 409 || error.status == 412) {
           console.log(error.error);
@@ -119,7 +147,7 @@ export class FacturaComponent implements OnInit {
 
       },
       () => {
-        console.log('Observer got a complete notification')
+        console.log('Observer got a complete notification');
       }
     );
   }
@@ -291,5 +319,97 @@ export class FacturaComponent implements OnInit {
     //   changeEvent.preventDefault();
     // }
   }
+
+  // Actualizaciones 
+
+  listarUsuariosPorRol(roleId: string): Promise<Usuario[]> {
+    return new Promise((resolve, reject) => {
+      this.httpParams = new HttpParams().set('page', String(this.page)).set('per_page', String(1000));
+
+      this.httpParams = this.httpParams.set('roles_id', roleId); // rol cliente
+
+      this.usuarioService.listar(this.httpParams).subscribe(
+        (response: Pagination) => {
+
+          // this.clientes = response.data;
+          this.collectionSize = response.total;
+          resolve(response.data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+
+          // this.clientes = [];
+          this.collectionSize = 0;
+
+          // tslint:disable-next-line:triple-equals
+          if (error.status == 401 || error.status == 403 || error.status == 404 || error.status == 409 || error.status == 412) {
+
+            this.error = error.error;
+          } else {
+            this.error = {
+              timestamp: "",
+              status: error.status,
+              error: [],
+              message: error.message,
+              path: error.url
+            };
+          }
+          resolve([]);
+        },
+        () => {
+          console.log('Observer got a complete notification');
+        }
+      );
+    });
+  }
+
+  public listarContratos(): Promise<Contrato[]> {
+
+    return new Promise((resolve, reject) => {
+
+      this.httpParams = new HttpParams().set('page', String(this.page)).set('per_page', String(1000))
+      .set('con_factura', '1');
+
+    this.contratoService.listar(this.httpParams).subscribe(
+      (response: Pagination) => {
+
+        //this.contratos = response.data;
+        this.collectionSize = response.total;
+        resolve(response.data);
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+
+        if (error.status == 401 || error.status == 403 || error.status == 409 || error.status == 412) {
+          console.log(error.error);
+          this.error = error.error;
+        } else {
+          this.error = {
+            timestamp: "",
+            status: 0,
+            error: [],
+            message: error.message,
+            path: ""
+          };
+        }
+        resolve([]);
+
+      },
+      () => {
+        console.log('Observer got a complete notification');
+      }
+    );
+
+    });
+
+  }
+
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+
+    const parsed = this.formatter.parse(input);
+
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { Usuario } from 'src/app/interface/usuario';
 
 import { AuthenticationService } from "../../service/authentication.service";
 
@@ -10,9 +11,13 @@ import { AuthenticationService } from "../../service/authentication.service";
 })
 export class DashboardComponent implements OnInit {
 
+  public usuario: Usuario;
+
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService) {
+
+      this.usuario = this.authenticationService.getUser();
 
   }
 

@@ -31,15 +31,34 @@
 
                 <div class="row">
 
+                    <div class="col-12">
+                        <ng-container>
+                            <ngb-alert *ngIf="successBoolean" type="success" (close)="success = false" class="mt-1">
+                                <p>Filtros aplicados con éxito</p>
+                            </ngb-alert>
+                        </ng-container>
+                        <ng-container>
+                            <ngb-alert *ngIf="errBoolean" type="danger" (close)="error = false">
+                                <p>No se encontrarón registros, no se aplico ningún cambio.</p>
+                            </ngb-alert>
+                        </ng-container>
+                    </div>
+
                     <div class="col-sm-12 col-xs-12">
 
-                        <form [formGroup]="this.facturaForm" (ngSubmit)="this.listar()">
+                        <form [formGroup]="this.facturaForm" (ngSubmit)="listar($event)">
 
                             <div class="form-group">
-                                <label for="usuarios_id">Usuario ID</label>
+                                <label for="usuarios_id">Usuarios con factura</label>
 
-                                <input formControlName="usuarios_id" type="number" class="form-control"
-                                    name="usuarios_id" placeholder="Agregar usuario ID">
+                               <!-- <input formControlName="usuarios_id" type="number" class="form-control"
+                                    name="usuarios_id" placeholder="Agregar usuario ID">-->
+
+                                    <select formControlName="usuarios_id" class="form-control" name="usuarios_id">
+                                        <ng-container *ngFor="let cliente of usuarios; let i = index">
+                                            <option [value]="cliente.id">{{cliente.nombre}} {{cliente.apellido}} ID #{{cliente.id}}</option>
+                                        </ng-container>
+                                    </select>
 
                                 <span
                                     *ngIf="this.facturaForm.get('usuarios_id').touched && this.facturaForm.get('usuarios_id').invalid">
@@ -50,7 +69,7 @@
                                 </span>
                             </div>
 
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="forma_pagos_id">Forma de pago ID</label>
 
                                 <input formControlName="forma_pagos_id" type="text" class="form-control"
@@ -93,13 +112,17 @@
                                 <span *ngIf="this.facturaForm.get('tarifas_id').errors?.maxlength">
                                     La tarifa ID debe tener máximo 50 carateres
                                 </span>
-                            </div>
+                            </div>-->
 
                             <div class="form-group">
                                 <label for="contratos_id">Contrato ID</label>
 
-                                <input formControlName="contratos_id" type="text" class="form-control"
-                                    name="contratos_id" placeholder="Agregar contrato ID">
+                                
+                                    <select formControlName="contratos_id" class="form-control" name="contratos_id">
+                                        <ng-container *ngFor="let contrato of contratos; let i = index">
+                                            <option [value]="contrato.id">Contrato ID #{{contrato.id}} - {{contrato.notificas_id.nombre}}</option>
+                                        </ng-container>
+                                    </select>
 
                                 <span
                                     *ngIf="this.facturaForm.get('contratos_id').touched && this.facturaForm.get('contratos_id').invalid">
@@ -110,22 +133,20 @@
                                 </span>
                             </div>
 
+                        
                             <div class="form-group">
-                                <label for="fe_inicio">Fecha inicio</label>
-
-                                <input formControlName="fe_inicio" type="text" class="form-control" name="fe_inicio"
-                                    placeholder="Agregar fecha de inicio">
-
-                                <span *ngIf="this.facturaForm.get('fe_inicio').errors?.pattern">
-                                    La fecha inicio debe tener el formato dd-MM-YYYY
-                                </span>
-                                <span *ngIf="this.facturaForm.get('fe_inicio').errors?.maxlength">
-                                    La fecha inicio debe tener máximo 50
-                                    carateres
-                                </span>
+                                <label for="fe_inicio">Buscar por fecha</label>
+                                <div class="input-group">
+                                    <input formControlName="fe_inicio" name="fe_inicio" class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #d="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="fe_final">Fecha final</label>
 
                                 <input formControlName="fe_final" type="text" class="form-control" name="fe_final"
@@ -138,12 +159,12 @@
                                     La fecha final debe tener máximo 50
                                     carateres
                                 </span>
-                            </div>
+                            </div>-->
 
-                            <button [disabled]="this.facturaForm.invalid" type="submit"
+                            <button type="submit"
                                 class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
-                            <button (click)="this.reset()" type="reset"
-                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                            <button (click)="facturaForm.reset(); listar()" type="button"
+                                class="btn btn-inverse waves-effect waves-light">Restablecer</button>
 
                         </form>
 
