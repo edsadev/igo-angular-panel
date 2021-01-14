@@ -17,97 +17,97 @@ export const environment = {
   },
   pathName: {
     "login": {
-      "post": "http://127.0.0.1:8000/api/v1/usuarios/login"
+      "post": "https://igoapp.live/freelife/public/api/v1/usuarios/login"
     },
     "categoria": {
-      "get": "http://127.0.0.1:8000/api/v1/categorias",
-      "put": "http://127.0.0.1:8000/api/v1/categorias/",
-      "post": "http://127.0.0.1:8000/api/v1/categorias",
-      "delete": "http://127.0.0.1:8000/api/v1/categorias/"
+      "get": "https://igoapp.live/freelife/public/api/v1/categorias",
+      "put": "https://igoapp.live/freelife/public/api/v1/categorias/",
+      "post": "https://igoapp.live/freelife/public/api/v1/categorias",
+      "delete": "https://igoapp.live/freelife/public/api/v1/categorias/"
     },
     "subcategoria": {
-      "get": "http://127.0.0.1:8000/api/v1/subcategorias",
-      "put": "http://127.0.0.1:8000/api/v1/subcategorias/",
-      "post": "http://127.0.0.1:8000/api/v1/categorias/{categoria}/subcategorias",
-      "delete": "http://127.0.0.1:8000/api/v1/subcategorias/"
+      "get": "https://igoapp.live/freelife/public/api/v1/subcategorias",
+      "put": "https://igoapp.live/freelife/public/api/v1/subcategorias/",
+      "post": "https://igoapp.live/freelife/public/api/v1/categorias/{categoria}/subcategorias",
+      "delete": "https://igoapp.live/freelife/public/api/v1/subcategorias/"
     },
     "moneda": {
-      "get": "http://127.0.0.1:8000/api/v1/monedas",
-      "put": "http://127.0.0.1:8000/api/v1/monedas/",
-      "post": "http://127.0.0.1:8000/api/v1/monedas",
-      "delete": "http://127.0.0.1:8000/api/v1/monedas/"
+      "get": "https://igoapp.live/freelife/public/api/v1/monedas",
+      "put": "https://igoapp.live/freelife/public/api/v1/monedas/",
+      "post": "https://igoapp.live/freelife/public/api/v1/monedas",
+      "delete": "https://igoapp.live/freelife/public/api/v1/monedas/"
     },
     "pago": {
-      "get": "http://127.0.0.1:8000/api/v1/pagos",
-      "put": "http://127.0.0.1:8000/api/v1/pagos/",
-      "post": "http://127.0.0.1:8000/api/v1/pagos",
-      "delete": "http://127.0.0.1:8000/api/v1/pagos/"
+      "get": "https://igoapp.live/freelife/public/api/v1/pagos",
+      "put": "https://igoapp.live/freelife/public/api/v1/pagos/",
+      "post": "https://igoapp.live/freelife/public/api/v1/pagos",
+      "delete": "https://igoapp.live/freelife/public/api/v1/pagos/"
     },
     "perfil": {
-      "get": "http://127.0.0.1:8000/api/v1/perfiles",
-      "put": "http://127.0.0.1:8000/api/v1/perfiles/",
-      "post": "http://127.0.0.1:8000/api/v1/perfiles",
-      "delete": "http://127.0.0.1:8000/api/v1/perfiles/"
+      "get": "https://igoapp.live/freelife/public/api/v1/perfiles",
+      "put": "https://igoapp.live/freelife/public/api/v1/perfiles/",
+      "post": "https://igoapp.live/freelife/public/api/v1/perfiles",
+      "delete": "https://igoapp.live/freelife/public/api/v1/perfiles/"
     },
     "notificacion": {
-      "get": "http://127.0.0.1:8000/api/v1/notificaciones",
-      "put": "http://127.0.0.1:8000/api/v1/notificaciones/",
-      "post": "http://127.0.0.1:8000/api/v1/notificaciones",
-      "delete": "http://127.0.0.1:8000/api/v1/notificaciones/"
+      "get": "https://igoapp.live/freelife/public/api/v1/notificaciones",
+      "put": "https://igoapp.live/freelife/public/api/v1/notificaciones/",
+      "post": "https://igoapp.live/freelife/public/api/v1/notificaciones",
+      "delete": "https://igoapp.live/freelife/public/api/v1/notificaciones/"
     },
     "tarifa": {
-      "get": "http://127.0.0.1:8000/api/v1/tarifas",
-      "put": "http://127.0.0.1:8000/api/v1/tarifas/",
-      "post": "http://127.0.0.1:8000/api/v1/tarifas",
-      "delete": "http://127.0.0.1:8000/api/v1/tarifas/"
+      "get": "https://igoapp.live/freelife/public/api/v1/tarifas",
+      "put": "https://igoapp.live/freelife/public/api/v1/tarifas/",
+      "post": "https://igoapp.live/freelife/public/api/v1/tarifas",
+      "delete": "https://igoapp.live/freelife/public/api/v1/tarifas/"
     },
     "servicio": {
-      "get": "http://127.0.0.1:8000/api/v1/servicios",
-      "put": "http://127.0.0.1:8000/api/v1/servicios/",
-      "post": "http://127.0.0.1:8000/api/v1/servicios",
-      "delete": "http://127.0.0.1:8000/api/v1/servicios/"
+      "get": "https://igoapp.live/freelife/public/api/v1/servicios",
+      "put": "https://igoapp.live/freelife/public/api/v1/servicios/",
+      "post": "https://igoapp.live/freelife/public/api/v1/servicios",
+      "delete": "https://igoapp.live/freelife/public/api/v1/servicios/"
     },
     "factura": {
-      "get": "http://127.0.0.1:8000/api/v1/facturas",
-      "put": "http://127.0.0.1:8000/api/v1/facturas/",
-      "post": "http://127.0.0.1:8000/api/v1/facturas",
-      "delete": "http://127.0.0.1:8000/api/v1/facturas/"
+      "get": "https://igoapp.live/freelife/public/api/v1/facturas",
+      "put": "https://igoapp.live/freelife/public/api/v1/facturas/",
+      "post": "https://igoapp.live/freelife/public/api/v1/facturas",
+      "delete": "https://igoapp.live/freelife/public/api/v1/facturas/"
     },
     "usuario": {
-      "get": "http://127.0.0.1:8000/api/v1/usuarios",
-      "put": "http://127.0.0.1:8000/api/v1/usuarios/",
-      "post": "http://127.0.0.1:8000/api/v1/usuarios",
-      "delete": "http://127.0.0.1:8000/api/v1/usuarios/"
+      "get": "https://igoapp.live/freelife/public/api/v1/usuarios",
+      "put": "https://igoapp.live/freelife/public/api/v1/usuarios/",
+      "post": "https://igoapp.live/freelife/public/api/v1/usuarios",
+      "delete": "https://igoapp.live/freelife/public/api/v1/usuarios/"
     },
     "comentario": {
-      "get": "http://127.0.0.1:8000/api/v1/comentarios",
-      "put": "http://127.0.0.1:8000/api/v1/comentarios/",
-      "post": "http://127.0.0.1:8000/api/v1/comentarios",
-      "delete": "http://127.0.0.1:8000/api/v1/comentarios/"
+      "get": "https://igoapp.live/freelife/public/api/v1/comentarios",
+      "put": "https://igoapp.live/freelife/public/api/v1/comentarios/",
+      "post": "https://igoapp.live/freelife/public/api/v1/comentarios",
+      "delete": "https://igoapp.live/freelife/public/api/v1/comentarios/"
     },
     "retiro": {
-      "get": "http://127.0.0.1:8000/api/v1/retiros",
-      "put": "http://127.0.0.1:8000/api/v1/retiros/",
-      "post": "http://127.0.0.1:8000/api/v1/usuarios/{id}/retiros",
-      "delete": "http://127.0.0.1:8000/api/v1/retiros/"
+      "get": "https://igoapp.live/freelife/public/api/v1/retiros",
+      "put": "https://igoapp.live/freelife/public/api/v1/retiros/",
+      "post": "https://igoapp.live/freelife/public/api/v1/usuarios/{id}/retiros",
+      "delete": "https://igoapp.live/freelife/public/api/v1/retiros/"
     },
     "paymentez": {
-      "get": "http://127.0.0.1:8000/api/v1/paymentez",
-      "put": "http://127.0.0.1:8000/api/v1/paymentez/",
-      "post": "http://127.0.0.1:8000/api/v1/usuarios/{id}/paymentez",
-      "delete": "http://127.0.0.1:8000/api/v1/paymentez/"
+      "get": "https://igoapp.live/freelife/public/api/v1/paymentez",
+      "put": "https://igoapp.live/freelife/public/api/v1/paymentez/",
+      "post": "https://igoapp.live/freelife/public/api/v1/usuarios/{id}/paymentez",
+      "delete": "https://igoapp.live/freelife/public/api/v1/paymentez/"
     },
     "denuncia": {
-      "get": "http://127.0.0.1:8000/api/v1/denuncias",
-      "put": "http://127.0.0.1:8000/api/v1/denuncias/",
-      "post": "http://127.0.0.1:8000/api/v1/usuarios/{id}/denuncias",
-      "delete": "http://127.0.0.1:8000/api/v1/denuncias/"
+      "get": "https://igoapp.live/freelife/public/api/v1/denuncias",
+      "put": "https://igoapp.live/freelife/public/api/v1/denuncias/",
+      "post": "https://igoapp.live/freelife/public/api/v1/usuarios/{id}/denuncias",
+      "delete": "https://igoapp.live/freelife/public/api/v1/denuncias/"
     },
     "contrato": {
-      "get": "http://127.0.0.1:8000/api/v1/contratos",
-      "put": "http://127.0.0.1:8000/api/v1/contratos/",
-      "post": "http://127.0.0.1:8000/api/v1/contratos",
-      "delete": "http://127.0.0.1:8000/api/v1/contratos/"
+      "get": "https://igoapp.live/freelife/public/api/v1/contratos",
+      "put": "https://igoapp.live/freelife/public/api/v1/contratos/",
+      "post": "https://igoapp.live/freelife/public/api/v1/contratos",
+      "delete": "https://igoapp.live/freelife/public/api/v1/contratos/"
     }
   }
 };

@@ -134,7 +134,8 @@ export class CategoriaComponent implements OnInit {
           (response: Categoria) => {
 
             console.log(response);
-
+            this.reset(); // Resetea despues del update
+            this.categoria.id = null; // Resetea el ID
             this.success = {
               code: environment.accepted['202'],
               message: environment.accepted.message
@@ -155,6 +156,8 @@ export class CategoriaComponent implements OnInit {
 
             this.categorias.push(response);
 
+            this.categoria.id = null;
+
             this.success = {
               code: environment.created['201'],
               message: environment.created.message
@@ -166,8 +169,8 @@ export class CategoriaComponent implements OnInit {
           });
 
       }
-
-      this.reset();
+      this.categoriaForm.reset();
+      // this.reset();
     } else {
       console.log('No es valido');
     }
@@ -183,6 +186,7 @@ export class CategoriaComponent implements OnInit {
 
     this.categoriaService.delete(categoria).subscribe(
       (response: Categoria) => {
+        this.categoria.id = null;
         console.log(response);
       },
       this.errors,

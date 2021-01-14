@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "igo"
+    }
+  },
+  "defaultProject": "igo",
+  "cli": {
+    "analytics": false
+  }
 }

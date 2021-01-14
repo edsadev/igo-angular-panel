@@ -19,8 +19,22 @@
 <!-- ============================================================== -->
 <!-- Start Page Content -->
 <!-- ============================================================== -->
-<div class="row">
+<div class="row" *ngIf="!rendered">
     <!--Little Profile widget-->
+
+    <div class="col-12">
+        <ng-container>
+            <ngb-alert *ngIf="successBoolean" type="success" (close)="success = false" class="mt-1">
+                <p>Filtros aplicados con éxito</p>
+            </ngb-alert>
+        </ng-container>
+        <ng-container>
+            <ngb-alert *ngIf="errBoolean" type="danger" (close)="error = false">
+                <p>No se encontrarón registros, no se aplico ningún cambio.</p>
+            </ngb-alert>
+        </ng-container>
+    </div>
+
     <div class="col-lg-3 col-xlg-2">
         <div class="card">
 
@@ -33,16 +47,20 @@
 
                     <div class="col-sm-12 col-xs-12">
 
-                        <form [formGroup]="this.servicioForm" (ngSubmit)="this.listar()">
+                        <form [formGroup]="this.servicioForm" (ngSubmit)="listar($event)">
 
                             <div class="form-group">
-                                <label for="categorias_id">Categoría ID</label>
+                                <label for="categorias_id">Selecciona una categoría</label>
 
-                                <input formControlName="categorias_id" type="number" class="form-control"
-                                    name="categorias_id" placeholder="Agregar categoría ID">
+                                <!--<input formControlName="categorias_id" type="number" class="form-control" name="categorias_id" placeholder="Agregar categoría ID">-->
 
-                                <span
-                                    *ngIf="this.servicioForm.get('categorias_id').touched && this.servicioForm.get('categorias_id').invalid">
+                                <select (change)="listarSubcategoria($event.target.value)" formControlName="categorias_id" class="form-control" name="categorias_id">
+                                    <ng-container *ngFor="let categoria of categorias; let i = index">
+                                        <option [value]="categoria.id">{{categoria.nombre}}</option>
+                                    </ng-container>
+                                </select>
+
+                                <span *ngIf="this.servicioForm.get('categorias_id').touched && this.servicioForm.get('categorias_id').invalid">
                                     Introduzca un ID de categoría
                                 </span>
                                 <span *ngIf="this.servicioForm.get('categorias_id').errors?.maxlength">
@@ -51,13 +69,17 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="sub_categorias_id">Subcategoría ID</label>
+                                <label for="sub_categorias_id">Selecciona una subcategoría</label>
 
-                                <input formControlName="sub_categorias_id" type="text" class="form-control"
-                                    name="sub_categorias_id" placeholder="Agregar subcategoría ID">
+                                <!--<input formControlName="sub_categorias_id" type="text" class="form-control" name="sub_categorias_id" placeholder="Agregar subcategoría ID">-->
+                                <select formControlName="sub_categorias_id" class="form-control" name="sub_categorias_id">
+                                    <option *ngIf="subcategorias.length >= 1" disabled selected>Selecciona una opción</option>
+                                    <ng-container *ngFor="let subcategoria of subcategorias; let i = index">
+                                        <option [value]="subcategoria.id">{{subcategoria.nombre}}</option>
+                                    </ng-container>
+                                </select>
 
-                                <span
-                                    *ngIf="this.servicioForm.get('sub_categorias_id').touched && this.servicioForm.get('sub_categorias_id').invalid">
+                                <span *ngIf="this.servicioForm.get('sub_categorias_id').touched && this.servicioForm.get('sub_categorias_id').invalid">
                                     Introduzca un ID de subcategoria
                                 </span>
                                 <span *ngIf="this.servicioForm.get('sub_categorias_id').errors?.maxlength">
@@ -66,13 +88,17 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="cliente_id">Cliente ID</label>
+                                <label for="cliente_id">Filtrar por cliente</label>
 
-                                <input formControlName="cliente_id" type="text" class="form-control" name="cliente_id"
-                                    placeholder="Agregar cliente ID">
+                                <select formControlName="cliente_id" class="form-control" name="cliente_id">
+                                    <ng-container *ngFor="let cliente of clientes; let i = index">
+                                        <option [value]="cliente.id">{{cliente.nombre}} {{cliente.apellido}} ID #{{cliente.id}}</option>
+                                    </ng-container>
+                                </select>
 
-                                <span
-                                    *ngIf="this.servicioForm.get('cliente_id').touched && this.servicioForm.get('cliente_id').invalid">
+                                <!--<input formControlName="cliente_id" type="text" class="form-control" name="cliente_id" placeholder="Agregar cliente ID">-->
+
+                                <span *ngIf="this.servicioForm.get('cliente_id').touched && this.servicioForm.get('cliente_id').invalid">
                                     Introduzca un cliente ID
                                 </span>
                                 <span *ngIf="this.servicioForm.get('cliente_id').errors?.maxlength">
@@ -81,20 +107,37 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="proveedor_id">Proveedor ID</label>
+                                <label for="feInicio">Buscar servicios por fecha</label>
+                                <div class="input-group">
+                                    <input formControlName="feInicio" name="feInicio" #feInicio class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #d="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <input formControlName="proveedor_id" type="text" class="form-control"
-                                    name="proveedor_id" placeholder="Agregar proveedor ID">
 
-                                <span
-                                    *ngIf="this.servicioForm.get('proveedor_id').touched && this.servicioForm.get('proveedor_id').invalid">
+                            <!--<div class="form-group">
+                                <label for="proveedor_id">Filtrar por proveedor</label>
+
+
+                                <select formControlName="proveedor_id" class="form-control" name="proveedor_id">
+                                    <ng-container *ngFor="let proveedor of proveedores; let i = index">
+                                        <option [value]="proveedor.id">{{proveedor.nombre}} {{proveedor.apellido}} ID #{{proveedor.id}}</option>
+                                    </ng-container>
+                                </select>
+
+                                <span *ngIf="this.servicioForm.get('proveedor_id').touched && this.servicioForm.get('proveedor_id').invalid">
                                     Introduzca un proveedor ID
                                 </span>
                                 <span *ngIf="this.servicioForm.get('proveedor_id').errors?.maxlength">
                                     El proveedor ID debe tener máximo 50 carateres
                                 </span>
-                            </div>
+                            </div>-->
 
+                            <!--
                             <div class="form-group">
                                 <label for="proveedores">Proveedores</label>
 
@@ -104,8 +147,7 @@
                                     <option value="0">Falso</option>
                                 </select>
 
-                                <span
-                                    *ngIf="this.servicioForm.get('proveedores').touched && this.servicioForm.get('proveedores').invalid">
+                                <span *ngIf="this.servicioForm.get('proveedores').touched && this.servicioForm.get('proveedores').invalid">
                                     Seleccione un valor
                                 </span>
                             </div>
@@ -119,11 +161,11 @@
                                     <option value="0">Falso</option>
                                 </select>
 
-                                <span
-                                    *ngIf="this.servicioForm.get('clientes').touched && this.servicioForm.get('clientes').invalid">
+                                <span *ngIf="this.servicioForm.get('clientes').touched && this.servicioForm.get('clientes').invalid">
                                     Seleccione un valor
                                 </span>
                             </div>
+                            
 
                             <div class="form-group">
                                 <label for="verificado">Estatus</label>
@@ -133,16 +175,15 @@
                                     <option value="I">Inactivo</option>
                                 </select>
 
-                                <span
-                                    *ngIf="this.servicioForm.get('estatus').touched && this.servicioForm.get('estatus').invalid">
+                                <span *ngIf="this.servicioForm.get('estatus').touched && this.servicioForm.get('estatus').invalid">
                                     Seleccione un valor
                                 </span>
                             </div>
+                            -->
 
-                            <button [disabled]="this.servicioForm.invalid" type="submit"
-                                class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
-                            <button (click)="this.reset()" type="reset"
-                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+
+                            <button [disabled]="this.servicioForm.invalid" type="submit" class="btn btn-info waves-effect waves-light m-r-10">Buscar</button>
+                            <button (click)="servicioForm.reset(); listar()" type="button" class="btn btn-inverse waves-effect waves-light">Restablecer</button>
 
                         </form>
 
@@ -191,20 +232,18 @@
                                 <td>
                                     <span [ngSwitch]="servicio.estatus">
                                         <span *ngSwitchCase="'A'">Activo</span>
-                                        <span *ngSwitchCase="'I'">Inactivo</span>
-                                        <span *ngSwitchCase="'E'">Eliminado</span>
-                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    <span *ngSwitchCase="'I'">Inactivo</span>
+                                    <span *ngSwitchCase="'E'">Eliminado</span>
+                                    <span *ngSwitchDefault>(Estatus no existe)</span>
                                     </span>
                                 </td>
                                 <td>{{ servicio.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>{{ servicio.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>
-                                    <button (click)="this.open(confirm, servicio)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                    <button (click)="this.open(confirm, servicio)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline">
                                         <i class="ti-close" aria-hidden="true"></i>
                                     </button>
-                                    <button (click)="this.open(content, servicio)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                    <button (click)="this.open(content, servicio)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline">
                                         <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -221,8 +260,7 @@
                     </table>
 
                     <div class="d-flex justify-content-between p-2">
-                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
-                            (pageChange)="listar()">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="listar()">
                         </ngb-pagination>
                     </div>
 
@@ -232,8 +270,7 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Eliminar tarifa</h4>
-                        <button type="button" class="close" aria-label="Close button"
-                            (click)="modal.dismiss('Cross click')">
+                        <button type="button" class="close" aria-label="Close button" (click)="modal.dismiss('Cross click')">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -249,10 +286,8 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                            (click)="modal.dismiss('cancel click')">Cancel</button>
-                        <button type="button" ngbAutofocus class="btn btn-danger"
-                            (click)="modal.close('Eliminar')">Ok</button>
+                        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Eliminar')">Ok</button>
                     </div>
 
                 </ng-template>
@@ -272,8 +307,7 @@
 
                             <div class="form-body">
 
-                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)"
-                                    class="nav-tabs">
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)" class="nav-tabs">
 
                                     <li [ngbNavItem]="1">
 
@@ -299,8 +333,8 @@
                                                                         <span [ngSwitch]="servicio.tipo_proyecto">
                                                                             <span *ngSwitchCase="'P'">Por
                                                                                 proyecto</span>
-                                                                            <span *ngSwitchCase="'H'">Por horas</span>
-                                                                            <span *ngSwitchDefault>(Tipo proyecto no
+                                                                        <span *ngSwitchCase="'H'">Por horas</span>
+                                                                        <span *ngSwitchDefault>(Tipo proyecto no
                                                                                 existe)</span>
                                                                         </span>
                                                                     </p>
@@ -334,8 +368,7 @@
 
                                                             <div class="form-group row">
 
-                                                                <label
-                                                                    class="control-label col-md-3">Descripción:</label>
+                                                                <label class="control-label col-md-3">Descripción:</label>
                                                                 <div class="col-md-9">
                                                                     <p class="form-control-static">
                                                                         {{ this.servicio.descripcion }}
@@ -463,8 +496,7 @@
 
                                                             <div class="form-group row">
 
-                                                                <label
-                                                                    class="control-label col-md-3">Modificado:</label>
+                                                                <label class="control-label col-md-3">Modificado:</label>
 
                                                                 <div class="col-md-9">
                                                                     <p class="form-control-static">
@@ -484,15 +516,11 @@
 
                                                             <div class="form-group row">
 
-                                                                <label
-                                                                    class="control-label text-center col-md-12">Foto</label>
+                                                                <label class="control-label text-center col-md-12">Foto</label>
                                                                 <div class="col-md-12">
 
-                                                                    <img style="max-width: 600px;" *ngIf="this.servicio.foto"
-                                                                        [src]="this.servicio.foto"
-                                                                        class="rounded mx-auto d-block"
-                                                                        alt="Foto" />
-                                                                    
+                                                                    <img style="max-width: 600px;" *ngIf="this.servicio.foto" [src]="this.servicio.foto" class="rounded mx-auto d-block" alt="Foto" />
+
                                                                 </div>
 
                                                             </div>
@@ -507,15 +535,11 @@
 
                                                             <div class="form-group row">
 
-                                                                <label
-                                                                    class="control-label text-center col-md-12">Extra fotos</label>
+                                                                <label class="control-label text-center col-md-12">Extra fotos</label>
                                                                 <div class="col-md-12">
 
-                                                                    <img style="max-width: 600px;" *ngFor="let foto of this.servicio.extraFotos"
-                                                                        [src]="foto"
-                                                                        class="rounded mx-auto d-block"
-                                                                        alt="Foto" />
-                                                                    
+                                                                    <img style="max-width: 600px;" *ngFor="let foto of this.servicio.extraFotos" [src]="foto" class="rounded mx-auto d-block" alt="Foto" />
+
                                                                 </div>
 
                                                             </div>
@@ -544,8 +568,7 @@
 
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button> -->
-                        <button ngbAutofocus type="button" (click)="modal.close('Close click')"
-                            class="btn btn-inverse waves-effect waves-light">Cerrar</button>
+                        <button ngbAutofocus type="button" (click)="modal.close('Close click')" class="btn btn-inverse waves-effect waves-light">Cerrar</button>
                     </div>
 
                 </ng-template>

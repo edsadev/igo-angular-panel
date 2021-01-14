@@ -34,11 +34,9 @@
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <!-- [(ngModel)]="this.categoria.nombre" -->
-                                <input formControlName="nombre" type="text" class="form-control" name="nombre"
-                                    placeholder="Agregar nombre">
+                                <input formControlName="nombre" type="text" class="form-control" name="nombre" placeholder="Agregar nombre">
 
-                                <span
-                                    *ngIf="this.categoriaForm.get('nombre').touched && this.categoriaForm.get('nombre').invalid">
+                                <span *ngIf="this.categoriaForm.get('nombre').touched && this.categoriaForm.get('nombre').invalid">
                                     Introduzca un nombre
                                 </span>
                                 <span *ngIf="this.categoriaForm.get('nombre').errors?.maxlength">
@@ -49,11 +47,9 @@
                             <div class="form-group">
                                 <label for="descripcion">Descripción</label>
                                 <!-- [(ngModel)]="this.categoria.descripcion" -->
-                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion"
-                                    placeholder="Agregar descripcion">
+                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion" placeholder="Agregar descripcion">
 
-                                <span
-                                    *ngIf="this.categoriaForm.get('descripcion').touched && this.categoriaForm.get('descripcion').invalid">
+                                <span *ngIf="this.categoriaForm.get('descripcion').touched && this.categoriaForm.get('descripcion').invalid">
                                     Introduzca la descripción
                                 </span>
                                 <span *ngIf="this.categoriaForm.get('descripcion').errors?.maxlength">
@@ -63,11 +59,9 @@
 
                             <div class="form-group">
                                 <label for="font_type">Font Type</label>
-                                <input formControlName="font_type" type="text" class="form-control" name="font_type"
-                                    placeholder="Agregar Font Type">
+                                <input formControlName="font_type" type="text" class="form-control" name="font_type" placeholder="Agregar Font Type">
 
-                                <span
-                                    *ngIf="this.categoriaForm.get('font_type').touched && this.categoriaForm.get('font_type').invalid">
+                                <span *ngIf="this.categoriaForm.get('font_type').touched && this.categoriaForm.get('font_type').invalid">
                                     Introduzca el font type
                                 </span>
                                 <span *ngIf="this.categoriaForm.get('font_type').errors?.maxlength">
@@ -77,11 +71,9 @@
 
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input formControlName="name" type="text" class="form-control" name="name"
-                                    placeholder="Agregar name">
+                                <input formControlName="name" type="text" class="form-control" name="name" placeholder="Agregar name">
 
-                                <span
-                                    *ngIf="this.categoriaForm.get('name').touched && this.categoriaForm.get('name').invalid">
+                                <span *ngIf="this.categoriaForm.get('name').touched && this.categoriaForm.get('name').invalid">
                                     Introduzca el name
                                 </span>
                                 <span *ngIf="this.categoriaForm.get('name').errors?.maxlength">
@@ -93,20 +85,17 @@
                                 <label for="estatus">Estatus</label>
                                 <!-- [(ngModel)]="this.categoria.estatus" -->
                                 <select formControlName="estatus" class="form-control" name="estatus">
-                                    <option>A</option>
-                                    <option>I</option>
+                                    <option value="A" selected>Disponible</option>
+                                    <option value="I">Inactivo</option>
                                 </select>
 
-                                <span
-                                    *ngIf="this.categoriaForm.get('estatus').touched && this.categoriaForm.get('estatus').invalid">
+                                <span *ngIf="this.categoriaForm.get('estatus').touched && this.categoriaForm.get('estatus').invalid">
                                     Seleccione un valor
                                 </span>
                             </div>
 
-                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"
-                                [disabled]="this.categoriaForm.invalid">Enviar</button>
-                            <button type="reset" class="btn btn-inverse waves-effect waves-light"
-                                (click)="this.reset()">Cancelar</button>
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" [disabled]="this.categoriaForm.invalid">Enviar</button>
+                            <button type="reset" class="btn btn-inverse waves-effect waves-light" (click)="this.reset()">Cancelar</button>
 
                             <ngb-alert *ngIf="success" type="success" (close)="success = null" class="mt-1">
                                 <h4 class="alert-heading">{{ success.code }}</h4>
@@ -156,12 +145,10 @@
                                 <td>{{ categoria.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>{{ categoria.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>
-                                    <button (click)="this.open(confirm, this.categoria)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                    <button (click)="this.open(confirm, this.categoria)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline">
                                         <i class="ti-close" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline"
-                                        (click)="consultar(categoria)">
+                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline" (click)="consultar(categoria)">
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -172,8 +159,7 @@
                     </table>
 
                     <div class="d-flex justify-content-between p-2">
-                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
-                            (pageChange)="listar()">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="listar()">
                         </ngb-pagination>
 
                         <!-- <select class="custom-select" style="width: auto" [(ngModel)]="pageSize"
@@ -190,8 +176,7 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Eliminar categoría</h4>
-                        <button type="button" class="close" aria-label="Close button"
-                            (click)="modal.dismiss('Cross click')">
+                        <button type="button" class="close" aria-label="Close button" (click)="modal.dismiss('Cross click')">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -207,10 +192,8 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                            (click)="modal.dismiss('cancel click')">Cancel</button>
-                        <button type="button" ngbAutofocus class="btn btn-danger"
-                            (click)="modal.close('Eliminar')">Ok</button>
+                        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Eliminar')">Ok</button>
                     </div>
 
                 </ng-template>

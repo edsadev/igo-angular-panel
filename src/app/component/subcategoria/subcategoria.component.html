@@ -29,23 +29,24 @@
                 <p class="text-muted m-b-30 font-13">Subcategoría </p>
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
-                        <form [formGroup]="this.subcategoriaForm" (ngSubmit)="this.submit()">
+                        <form [formGroup]="this.subcategoriaForm" (ngSubmit)="submit()">
 
                             <div class="form-group">
                                 <label for="categorias_id">Categoría</label>
-                                <select formControlName="categorias_id" class="form-control" name="categorias_id">
-                                    <option *ngFor="let categoria of this.categorias" [value]="categoria.id">
-                                        {{ categoria.nombre }}</option>
+                                <select [(ngModel)]="EditCategory" formControlName="categorias_id" class="form-control" name="categorias_id">
+                                    <ng-container *ngFor="let categoria of this.categorias; let i = index">
+                                        <option [value]="categoria.id">
+                                            {{ categoria.nombre }}
+                                        </option>
+                                    </ng-container>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
-                                <input formControlName="nombre" type="text" class="form-control" name="nombre"
-                                    placeholder="Agregar nombre">
+                                <input formControlName="nombre" type="text" class="form-control" name="nombre" placeholder="Agregar nombre">
 
-                                <span
-                                    *ngIf="this.subcategoriaForm.get('nombre').touched && this.subcategoriaForm.get('nombre').invalid">
+                                <span *ngIf="this.subcategoriaForm.get('nombre').touched && this.subcategoriaForm.get('nombre').invalid">
                                     Introduzca un nombre
                                 </span>
                                 <span *ngIf="this.subcategoriaForm.get('nombre').errors?.maxlength">
@@ -56,11 +57,9 @@
 
                             <div class="form-group">
                                 <label for="descripcion">Descripción</label>
-                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion"
-                                    placeholder="Agregar descripcion">
+                                <input formControlName="descripcion" type="text" class="form-control" name="descripcion" placeholder="Agregar descripcion">
 
-                                <span
-                                    *ngIf="this.subcategoriaForm.get('descripcion').touched && this.subcategoriaForm.get('descripcion').invalid">
+                                <span *ngIf="this.subcategoriaForm.get('descripcion').touched && this.subcategoriaForm.get('descripcion').invalid">
                                     Introduzca la descripción
                                 </span>
                                 <span *ngIf="this.subcategoriaForm.get('descripcion').errors?.maxlength">
@@ -70,11 +69,9 @@
 
                             <div class="form-group">
                                 <label for="font_type">Font Type</label>
-                                <input formControlName="font_type" type="text" class="form-control" name="font_type"
-                                    placeholder="Agregar Font Type">
+                                <input formControlName="font_type" type="text" class="form-control" name="font_type" placeholder="Agregar Font Type">
 
-                                <span
-                                    *ngIf="this.subcategoriaForm.get('font_type').touched && this.subcategoriaForm.get('font_type').invalid">
+                                <span *ngIf="this.subcategoriaForm.get('font_type').touched && this.subcategoriaForm.get('font_type').invalid">
                                     Introduzca el font type
                                 </span>
                                 <span *ngIf="this.subcategoriaForm.get('font_type').errors?.maxlength">
@@ -84,11 +81,9 @@
 
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input formControlName="name" type="text" class="form-control" name="name"
-                                    placeholder="Agregar name">
+                                <input formControlName="name" type="text" class="form-control" name="name" placeholder="Agregar name">
 
-                                <span
-                                    *ngIf="this.subcategoriaForm.get('name').touched && this.subcategoriaForm.get('name').invalid">
+                                <span *ngIf="this.subcategoriaForm.get('name').touched && this.subcategoriaForm.get('name').invalid">
                                     Introduzca el name
                                 </span>
                                 <span *ngIf="this.subcategoriaForm.get('name').errors?.maxlength">
@@ -99,21 +94,18 @@
                             <div class="form-group">
                                 <label for="estatus">Estatus</label>
                                 <select formControlName="estatus" class="form-control" name="estatus">
-                                    <option>A</option>
-                                    <option>I</option>
+                                    <option value="A">Disponible</option>
+                                    <option value="I">Inactivo</option>
                                 </select>
 
-                                <span
-                                    *ngIf="this.subcategoriaForm.get('estatus').touched && this.subcategoriaForm.get('estatus').invalid">
+                                <span *ngIf="this.subcategoriaForm.get('estatus').touched && this.subcategoriaForm.get('estatus').invalid">
                                     Seleccione un valor
                                 </span>
 
                             </div>
 
-                            <button [disabled]="this.subcategoriaForm.invalid" type="submit"
-                                class="btn btn-info waves-effect waves-light m-r-10">Enviar</button>
-                            <button (click)="this.reset()" type="reset"
-                                class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                            <button [disabled]="this.subcategoriaForm.invalid" type="submit" class="btn btn-info waves-effect waves-light m-r-10">Enviar</button>
+                            <button (click)="this.reset()" type="reset" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
 
                             <ngb-alert *ngIf="success" type="success" (close)="success = null" class="mt-1">
                                 <h4 class="alert-heading">{{ success.code }}</h4>
@@ -163,20 +155,18 @@
                                 <td>
                                     <span [ngSwitch]="subcategoria.estatus">
                                         <span *ngSwitchCase="'A'">Activo</span>
-                                        <span *ngSwitchCase="'I'">Inactivo</span>
-                                        <span *ngSwitchCase="'E'">Eliminado</span>
-                                        <span *ngSwitchDefault>(Estatus no existe)</span>
+                                    <span *ngSwitchCase="'I'">Inactivo</span>
+                                    <span *ngSwitchCase="'E'">Eliminado</span>
+                                    <span *ngSwitchDefault>(Estatus no existe)</span>
                                     </span>
                                 </td>
                                 <td>{{ subcategoria.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>{{ subcategoria.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
                                 <td>
-                                    <button (click)="this.open(confirm, subcategoria)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
+                                    <button (click)="this.open(confirm, subcategoria)" type="button" class="btn btn-sm btn-icon btn-pure btn-outline">
                                         <i class="ti-close" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline"
-                                        (click)="consultar(subcategoria)">
+                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline" (click)="consultar(subcategoria)">
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -193,8 +183,7 @@
                     </table>
 
                     <div class="d-flex justify-content-between p-2">
-                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
-                            (pageChange)="listar()">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="listar()">
                         </ngb-pagination>
                     </div>
 
@@ -204,8 +193,7 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Eliminar subcategoría</h4>
-                        <button type="button" class="close" aria-label="Close button"
-                            (click)="modal.dismiss('Cross click')">
+                        <button type="button" class="close" aria-label="Close button" (click)="modal.dismiss('Cross click')">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -221,10 +209,8 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                            (click)="modal.dismiss('cancel click')">Cancel</button>
-                        <button type="button" ngbAutofocus class="btn btn-danger"
-                            (click)="modal.close('Eliminar')">Ok</button>
+                        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+                        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Eliminar')">Ok</button>
                     </div>
 
                 </ng-template>

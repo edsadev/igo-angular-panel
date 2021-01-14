@@ -30,12 +30,13 @@ export class SubcategoriaComponent implements OnInit {
   });
   public success: Success;
   public error: Error;
-  public categorias: Array<Categoria>;
-  public subcategorias: Array<Subcategoria>;
+  public categorias: Array<Categoria> = [];
+  public subcategorias: Array<Subcategoria> = [];
   public page: number = 1;
   public pageSize: number = 5;
   public collectionSize: number = 0;
-  public subcategoria: Subcategoria;
+  public subcategoria: Subcategoria | any = '';
+  public EditCategory: number = 1;
 
 
   constructor(
@@ -79,7 +80,7 @@ export class SubcategoriaComponent implements OnInit {
    */
   public listar(): void {
 
-    this.httpParams = new HttpParams().set('page', String(this.page)).set('per_page', String(this.pageSize));
+    this.httpParams = new HttpParams().set('order', 'DESC').set('page', String(this.page)).set('per_page', String(this.pageSize));
 
     this.subcategoriaService.listar(this.httpParams).subscribe(
       (response: Pagination) => {
@@ -152,6 +153,8 @@ export class SubcategoriaComponent implements OnInit {
   public consultar(subcategoria: Subcategoria): void {
 
     this.subcategoria = subcategoria;
+    this.EditCategory = subcategoria.categorias.id;
+    console.log(this.EditCategory);
 
     this.subcategoriaForm.patchValue({
       categorias_id: subcategoria.categorias.id,
@@ -170,53 +173,64 @@ export class SubcategoriaComponent implements OnInit {
   public submit(): void {
 
     if (this.subcategoriaForm.valid) {
-      
-      this.subcategoria.categorias.id = this.subcategoriaForm.value.categorias_id;
+      // this.subcategoria.categorias.id = this.subcategoriaForm.value.categorias_id;
+
+
       this.subcategoria.nombre = this.subcategoriaForm.value.nombre;
       this.subcategoria.descripcion = this.subcategoriaForm.value.descripcion;
       this.subcategoria.font_type = this.subcategoriaForm.value.font_type;
       this.subcategoria.name = this.subcategoriaForm.value.name;
       this.subcategoria.estatus = this.subcategoriaForm.value.estatus;
 
-      if (this.subcategoria.id) {
+      setTimeout(() => {
+        if (this.subcategoria.id) {
 
-        this.subcategoriaService.update(this.subcategoria).subscribe(
-          (response: Subcategoria) => {
+          this.subcategoriaService.update(this.subcategoria).subscribe(
+            (response: Subcategoria) => {
 
-            console.log(response);
+              console.log(response);
+              this.reset();
+              this.subcategoria.id = null;
+              this.EditCategory = -1;
+              this.success = {
+                code: environment.accepted['202'],
+                message: environment.accepted.message
+              };
+            },
+            this.errors,
+            () => {
+              console.log('Observer got a complete notification');
 
-            this.success = {
-              code: environment.accepted['202'],
-              message: environment.accepted.message
-            };
-          },
-          this.errors,
-          () => {
-            console.log('Observer got a complete notification');
+            });
+        } else {
 
-          });
-      } else {
+          this.subcategoriaService.create(this.subcategoria, this.EditCategory.toString()).subscribe(
+            (response: Subcategoria) => {
 
-        this.subcategoriaService.create(this.subcategoria).subscribe(
-          (response: Subcategoria) => {
+              console.log(response);
 
-            console.log(response);
+              this.subcategorias.unshift(response);
 
-            this.subcategorias.push(response);
+              this.subcategoria.id = null;
 
-            this.success = {
-              code: environment.created['201'],
-              message: environment.created.message
-            };
-          },
-          this.errors,
-          () => {
-            console.log('Observer got a complete notification');
-          });
+              this.EditCategory = -1;
 
-      }
+              this.success = {
+                code: environment.created['201'],
+                message: environment.created.message
+              };
+            },
+            this.errors,
+            () => {
+              console.log('Observer got a complete notification');
+            });
 
-      this.reset();
+        }
+
+        this.subcategoriaForm.reset();
+
+      }, 600);
+
     } else {
       console.log('No es valido');
     }
@@ -232,6 +246,11 @@ export class SubcategoriaComponent implements OnInit {
 
     this.subcategoriaService.delete(subcategoria).subscribe(
       (response: Subcategoria) => {
+        // this.reset();
+        this.subcategoria.id = null;
+
+        this.EditCategory = -1;
+
         console.log(response);
       },
       this.errors,
@@ -247,7 +266,7 @@ export class SubcategoriaComponent implements OnInit {
   public reset(): void {
 
     this.subcategoriaForm.reset({
-      categorias_id: '1',
+      categorias_id: '-1',
       nombre: '',
       descripcion: '',
       estatus: 'A'

@@ -56,14 +56,15 @@ export class SubcategoriaService {
   /**
    * create
    */
-  public create(subcategoria: Subcategoria): Observable<Subcategoria> {
+  public create(subcategoria: Subcategoria, categoryId: string): Observable<Subcategoria> {
 
     this.httpOptions = {
       headers: this.httpHeaders.set('Authorization', this.authenticationService.getToken()),
       params: {}
     };
 
-    return this.http.post<Subcategoria>(environment.pathName.subcategoria.post.replace('{categoria}', String(subcategoria.categorias.id)), subcategoria, this.httpOptions);
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<Subcategoria>(environment.pathName.subcategoria.post.replace('{categoria}', categoryId), subcategoria, this.httpOptions);
   }
 
   /**

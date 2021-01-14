@@ -4,7 +4,7 @@ export interface Subcategoria {
     id: number;
     nombre: string;
     descripcion: string;
-    categorias: Categoria;
+    categorias: Categoria | any;
     font_type?: string;
     name?: string;
     estatus: string;
