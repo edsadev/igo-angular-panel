@@ -14,10 +14,11 @@ export class PaymentezService {
 
   private httpOptions: object;
   private httpHeaders: HttpHeaders;
+  public paymentezToken: string = null;
 
   constructor(
     private http: HttpClient,
-    private authenticationService: AuthenticationService) {
+    public authenticationService: AuthenticationService) {
 
     this.httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',

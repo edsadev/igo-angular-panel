@@ -93,6 +93,11 @@ export const environment = {
       "post": "https://igoapp.live/freelife/public/api/v1/usuarios/{id}/paymentez",
       "delete": "https://igoapp.live/freelife/public/api/v1/paymentez/"
     },
+    "reembolso": {
+      "get": "https://igoapp.live/freelife/public/api/v1/usuarios/paymentez/token",
+      "put": "https://igoapp.live/freelife/public/api/v1/usuarios/paymentez/reembolso/{usuario}",
+      "post": "https://ccapi-stg.paymentez.com/v2/transaction/refund"
+    },
     "denuncia": {
       "get": "https://igoapp.live/freelife/public/api/v1/denuncias",
       "put": "https://igoapp.live/freelife/public/api/v1/denuncias/",

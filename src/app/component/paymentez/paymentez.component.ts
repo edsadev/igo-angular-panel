@@ -5,9 +5,12 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { PaymentezService } from '../../service/paymentez.service';
+import { RefundServices } from '../../service/refund.service';
 import { Pagination } from 'src/app/interface/pagination';
 import { Error } from 'src/app/interface/error';
 import { Paymentez } from '../../interface/paymentez';
+import Swal, * as swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-paymentez',
@@ -29,12 +32,15 @@ export class PaymentezComponent implements OnInit {
   public pageSize: number = 5;
   public collectionSize: number = 0;
   public paymentez: Paymentez;
+  public currentIndex: number = -1;
+  public isLoading: boolean = false;
 
   public active: number = 1;
 
   constructor(
     private paymentezService: PaymentezService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private refundService: RefundServices) {
 
     this.paymentezs = [];
     this.error = {
@@ -147,7 +153,7 @@ export class PaymentezComponent implements OnInit {
 
   }
 
-  public open(content, paymentez: Paymentez): void {
+  public open(content, paymentez: Paymentez, currentIndex: number): void {
 
     this.paymentez = paymentez;
 
@@ -202,6 +208,80 @@ export class PaymentezComponent implements OnInit {
       });
 
   }
+
+  public startRefundProcess(paymentez: Paymentez, rowIndex: number): void {
+
+
+    const objectPayment: any = {
+
+      usuario: this.paymentezService.authenticationService.getUser().id.toString(),
+      transactionId: paymentez.transactionId,
+      id: paymentez.id,
+    }
+
+    this.isLoading = true;
+
+    const token = this.getPaymentezToken().then(
+
+      (tokenServer) => {
+
+        this.refundService.PaymentezRequest(tokenServer, paymentez)
+          
+        .subscribe((refundResp: any) => {
+
+          console.log(refundResp);
+
+            if (refundResp.status === 'success') {
+
+              this.refundService.update(
+                objectPayment,
+                this.paymentezService.authenticationService.getUser().id.toString()
+              ).subscribe((result: Paymentez) => {
+      
+                console.log(result);
+
+                this.paymentezs.splice(rowIndex, 1);
+
+                this.isLoading = false;
+
+                Swal.fire('Proceso realizado con éxito', `El pago ${paymentez.transactionId} ha sido reembolsado en su totalidad, el registro estará disponible, en el historial de reembolsos.`, 'success');
+
+      
+              });
+
+            } else {
+
+              Swal.fire('Algo salio mal!', `El reembolso ${paymentez.transactionId} no pudo ser procesado, inténtalo más tarde.`, 'error');
+
+              this.isLoading = false;
+
+            }
+
+          })
+
+
+      }
+
+    );
+
+  }
+
+  public getPaymentezToken(): Promise<String> {
+
+    return new Promise((resolve, reject) => {
+
+      this.refundService.GetToken().subscribe((tokenGateway) => {
+
+        resolve(tokenGateway.token);
+
+      });
+
+    });
+
+  }
+
+
+
 
   /**
    * 

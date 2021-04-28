@@ -83,8 +83,9 @@
                             <div class="form-group">
                                 <label for="estatus">Estatus</label>
                                 <select formControlName="estatus" class="form-control" name="estatus">
-                                    <option>A</option>
-                                    <option>I</option>
+                                    <option value="A">Activo</option>
+                                    <option value="I">Inactivo</option>
+                                    <option value="R">Reembolso</option>
                                 </select>
 
                                 <span
@@ -130,42 +131,62 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let paymentez of paymentezs">
-                                <th scope="row">{{ paymentez.id | number}}</th>
-                                <td>{{ paymentez.usuario.email }}</td>
-                                <td>{{ paymentez.formaPago.nombre }}</td>
-                                <td>{{ paymentez.moneda.moneda_iso | uppercase }}</td>
-                                <td>{{ paymentez.transactionId }}</td>
-                                <td>{{ paymentez.monto | number }}</td>
-                                <td>
-                                    <span [ngSwitch]="paymentez.estatus">
-                                        <span *ngSwitchCase="'A'">Activo</span>
-                                        <span *ngSwitchCase="'I'">Inactivo</span>
-                                        <span *ngSwitchCase="'E'">Eliminado</span>
-                                        <span *ngSwitchDefault>(Estatus no existe)</span>
-                                    </span>
-                                </td>
-                                <td>{{ paymentez.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
-                                <td>{{ paymentez.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
-                                <td>
-                                    <button (click)="this.open(confirm, paymentez)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
-                                        <i class="ti-close" aria-hidden="true"></i>
-                                    </button>
-                                    <button (click)="this.open(content, paymentez)" type="button"
-                                        class="btn btn-sm btn-icon btn-pure btn-outline">
-                                        <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr *ngIf="this.paymentezs.length < 1">
-                                <td colspan="10">
-                                    <p class="text-danger text-center">{{ this.error.message }}</p>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <ng-container *ngIf='!isLoading'>
+                            <tbody>
+                                <tr *ngFor="let paymentez of paymentezs; let i = index">
+                                    <th scope="row">{{ paymentez.id | number}}</th>
+                                    <td>{{ paymentez.usuario.email }}</td>
+                                    <td>{{ paymentez.formaPago.nombre }}</td>
+                                    <td>{{ paymentez.moneda.moneda_iso | uppercase }}</td>
+                                    <td>{{ paymentez.transactionId }}</td>
+                                    <td>{{ paymentez.monto | number }}</td>
+                                    <td>
+                                        <span [ngSwitch]="paymentez.estatus">
+                                            <span *ngSwitchCase="'A'">Activo</span>
+                                            <span *ngSwitchCase="'I'">Inactivo</span>
+                                            <span *ngSwitchCase="'E'">Eliminado</span>
+                                            <span *ngSwitchCase="'R'">Reembolsado</span>
+                                            <span *ngSwitchDefault>(Estatus no existe)</span>
+                                        </span>
+                                    </td>
+                                    <td>{{ paymentez.created_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                    <td>{{ paymentez.updated_at | date:'dd/MM/y hh:mm:ss a'}}</td>
+                                    <td>
+                                        <!--<button (click)="this.open(confirm, paymentez)" type="button"
+                                            class="btn btn-sm btn-icon btn-pure btn-outline">
+                                            <i class="ti-close" aria-hidden="true"></i>
+                                        </button>-->
+                                        <button (click)="this.open(content, paymentez, i)" type="button"
+                                            class="btn btn-sm btn-icon btn-pure btn-outline">
+                                            <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                        </button>
+                                        <ng-container *ngIf='paymentez.estatus != "R"'>
+                                            <button [swal]='refundSwal' type="button"
+                                                class="btn btn-sm btn-icon btn-pure btn-outline btn-danger text-white">
+                                                <i class="fa fa-cart-arrow-down fa-lg" aria-hidden="true"></i>
+                                            </button>
+                                        </ng-container>
+                                    </td>
+    
+                                    <swal
+                                    #refundSwal
+                                    title="Iniciar proceso de reembolso"
+                                    text="Confirma si deseas iniciar un proceso de reembolso con el ID {{ paymentez.transactionId }}, solicitado por el cliente, este proceso no se puede revertir."
+                                    icon="question"
+                                    [showCancelButton]="true"
+                                    [focusCancel]="true"
+                                    (confirm)="startRefundProcess(paymentez, i)">
+                                    </swal>
+    
+                                </tr>
+    
+                                <tr *ngIf="this.paymentezs.length < 1">
+                                    <td colspan="10">
+                                        <p class="text-danger text-center">{{ this.error.message }}</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </ng-container>
                         <tfoot>
                         </tfoot>
                     </table>
@@ -230,6 +251,25 @@
                                         <a ngbNavLink>Datos Paymentez</a>
 
                                         <ng-template ngbNavContent>
+
+                                            <div style="height: 10px;"></div>
+
+
+                                            <button [swal]='refundSwal2' type="button" class="btn btn-primary text-right btn-info">
+                                                Procesar reembolso
+                                            </button>
+
+                                            <swal
+                                                #refundSwal2
+                                                title="Iniciar proceso de reembolso"
+                                                text="Confirma si deseas iniciar un proceso de reembolso con el ID {{ paymentez.transactionId }}, solicitado por el cliente, este proceso no se puede revertir."
+                                                icon="question"
+                                                [showCancelButton]="true"
+                                                [focusCancel]="true"
+                                                (confirm)="startRefundProcess(this.paymentez, this.currentIndex)">
+                                            </swal>
+
+                                            <div style="height: 50px;"></div>
 
                                             <form class="form-horizontal" role="form">
 
